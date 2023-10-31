@@ -10,6 +10,9 @@ export default function handler(
 ) {
   console.log("body", req.body);
   console.log("query", req.query);
+  console.log("headers: ", req.headers);
+  console.log("Full: ", req);
+  
   res.status(200).json({
     message: JSON.stringify(req.body),
   });
