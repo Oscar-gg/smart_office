@@ -20,7 +20,10 @@ export default async function handler(
 
   const requestParams = {
     ConnectionId: connectionId,
-    Data: "Hello!",
+    Data: JSON.stringify({
+      action: "message",
+      content: message,
+    }),
   };
 
   const command = new PostToConnectionCommand(requestParams);
