@@ -8,7 +8,7 @@ type ResponseData = {
   message: string;
 };
 
-// Hacer pruebas directas con postman
+// Para hacer pruebas directas con postman
 
 export default async function handler(
   req: NextApiRequest,

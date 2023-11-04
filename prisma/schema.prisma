@@ -16,12 +16,11 @@ datasource db {
 }
 
 model Post {
-    id        Int      @id @default(sequence())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-
-    createdBy   User   @relation(fields: [createdById], references: [id])
+    id          Int      @id @default(sequence())
+    name        String
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+    createdBy   User     @relation(fields: [createdById], references: [id])
     createdById String
 
     @@index([name])
@@ -71,11 +70,25 @@ model User {
 }
 
 model Device {
-    connectionId String @id
+    connectionId String  @id
     name         String?
     type         String?
     stage        String
     domain       String
+}
+
+model Temperature {
+    id        Int      @id @default(sequence())
+    value     Float
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model LightLevel {
+    id        Int      @id @default(sequence())
+    value     Float
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 model VerificationToken {

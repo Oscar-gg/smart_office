@@ -81,12 +81,12 @@ export const deviceRouter = createTRPCRouter({
       });
     }),
 
-  getDeviceInfo: systemProcedure
+  getDeviceInfo: publicProcedure
     .input(z.object({ connectionId: z.string() }))
     .query(({ ctx, input }) => {
       return ctx.db.device.findFirst({
         where: {
-            connectionId: input.connectionId,
+          connectionId: input.connectionId,
         },
       });
     }),
