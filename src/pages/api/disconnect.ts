@@ -23,12 +23,12 @@ export default async function handler(
   } else {
     try {
       await deviceCaller.removeDevice({
-        connectionId: req.body.connectionId,
+        connectionId: connectionId,
       });
     } catch (error) {
       console.log("error: ", error);
       res.status(500).json({
-        message: "Error: " + error,
+        message: "Error: " + JSON.stringify(error),
       });
     }
     res.status(200).json({

@@ -61,6 +61,9 @@ export default function MessageDemo() {
   );
 }
 
+const h2tw = "bg-slate-400 rounded-lg w-fit p-2";
+const ptw = "bg-slate-200 rounded-lg w-fit p-2";
+
 const DeviceContainer = ({ deviceId }: { deviceId: string }) => {
   const { data: device, isLoading } = api.device.getDeviceInfo.useQuery({
     connectionId: deviceId,
@@ -79,20 +82,28 @@ const DeviceContainer = ({ deviceId }: { deviceId: string }) => {
   }
 
   return (
-    <div className="m-2 flex flex-col flex-wrap rounded-md bg-slate-500 p-2">
-      <h2>Nombre: {device?.name ?? "Sin nombre"}</h2>
-      <p>Connection ID: {device.connectionId}</p>
-      <p>Tipo: {device.type ?? "Sin tipo"}</p>
+    <div className="m-2 flex flex-row flex-wrap rounded-md bg-slate-500 p-2 gap-y-2">
+      <div className="m-1 flex flex-row gap-x-2">
+        <h2 className={h2tw}>Nombre: </h2>
+        <p className={ptw}>{device?.name ?? "Sin nombre"}</p>
+      </div>
+      <div className="m-1 flex flex-row gap-x-2">
+        <h2 className={h2tw}>Connection ID: </h2>
+        <p className={ptw}>{device.connectionId}</p>
+      </div>
+      <div className="m-1 flex flex-row gap-x-2">
+        <h2 className={h2tw}>Tipo: </h2>
+        <p className={ptw}>{device.type ?? "Sin tipo"}</p>
+      </div>
       <div className="flex flex-col gap-y-3">
-        <h2>Enviar mensaje:</h2>
+        <h2 className={h2tw}>Enviar mensaje:</h2>
         <input value={data} onChange={(e) => setData(e.target.value)} />
         <button
-          className="rounded-md bg-green-300 p-2 w-fit"
+          className="w-fit rounded-md bg-green-300 p-2"
           onClick={() =>
             mutation.mutate({ connectionId: deviceId, message: data })
           }
         >
-
           Enviar
         </button>
       </div>

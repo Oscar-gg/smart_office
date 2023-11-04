@@ -1,28 +1,34 @@
-# Create T3 App
+# Smart Office
 
-This is a [T3 Stack](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
+Iot project to manage office spaces, provide insights and analytics.
 
-## What's next? How do I make an app with this?
+This code corresponds to the serverless backend, where web clients make requests to and NodeMcu devices send data to (through websockets).
+For the NodeMcu code, please refer to [this repository]().
+
+## How to run
 
 We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
 
 If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
 
-- [Next.js](https://nextjs.org)
-- [NextAuth.js](https://next-auth.js.org)
-- [Prisma](https://prisma.io)
-- [Tailwind CSS](https://tailwindcss.com)
-- [tRPC](https://trpc.io)
+## Technologies used
 
-## Learn More
+- [T3 Stack](https://create.t3.gg/): A fullstack template for TypeScript projects with Next.js, Prisma, and tRPC
 
-To learn more about the [T3 Stack](https://create.t3.gg/), take a look at the following resources:
+  - [Next.js](https://nextjs.org)
+  - [NextAuth.js](https://next-auth.js.org)
+  - [Prisma](https://prisma.io)
+  - [Tailwind CSS](https://tailwindcss.com)
+  - [tRPC](https://trpc.io)
 
-- [Documentation](https://create.t3.gg/)
-- [Learn the T3 Stack](https://create.t3.gg/en/faq#what-learning-resources-are-currently-available) — Check out these awesome tutorials
+- [AWS api gateway](https://aws.amazon.com/api-gateway/): API Gateway is a fully managed service that makes it easy for developers to create, publish, maintain, monitor, and secure APIs at any scale.
 
-You can check out the [create-t3-app GitHub repository](https://github.com/t3-oss/create-t3-app) — your feedback and contributions are welcome!
+- [Ngrok](https://ngrok.com/docs/getting-started/?os=windows): Expose a local web server to the internet, useful for debugging.
 
-## How do I deploy this?
+- [Vercel](https://vercel.com/): Used for deployment.
 
-Follow our deployment guides for [Vercel](https://create.t3.gg/en/deployment/vercel), [Netlify](https://create.t3.gg/en/deployment/netlify) and [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+- [Coackroackdb](https://www.cockroachlabs.com/): Used to host the database.
+
+## How to deploy
+
+-

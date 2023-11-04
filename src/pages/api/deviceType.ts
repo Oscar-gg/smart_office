@@ -2,6 +2,8 @@ import type { NextApiRequest, NextApiResponse } from "next";
 
 import { deviceCaller } from "~/server/api/apiCaller";
 
+import { DeviceTypeModel } from "~/zod/types";
+
 type ResponseData = {
   message: string;
 };
@@ -17,29 +19,33 @@ export default async function handler(
 
   const { connectionId, original } = req.body;
 
-  const originalObject = JSON.parse(original);
-  const name = originalObject.name;
-  const type = originalObject.type; 
-
-  console.log("Original object: ", originalObject);
-
-  if (!connectionId){
+  if (!connectionId) {
     res.status(400).json({
       message: "Error: Missing connection id",
     });
-  } else if (!name || !type) {
-    res.status(400).json({
-      message: "Error: Missing name or type",
-    });
   }
 
-  await deviceCaller.setDevice({
-    connectionId,
-    name,
-    type,
-  });
+  try {
+    const deviceObject = DeviceTypeModel.parse(JSON.parse(original as string));
 
-  res.status(200).json({
-    message: "Device type set",
-  });
+    const name = deviceObject.name;
+    const type = deviceObject.type;
+
+    console.log("Original object: ", deviceObject);
+
+    await deviceCaller.setDevice({
+      connectionId,
+      name,
+      type,
+    });
+
+    res.status(200).json({
+      message: "Device type set",
+    });
+  } catch (error) {
+    console.log("error: ", error);
+    res.status(400).json({
+      message: "Error: " + JSON.stringify(error),
+    });
+  }
 }

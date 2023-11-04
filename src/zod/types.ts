@@ -8,3 +8,8 @@ export const DeviceModel = z.object({
   stage: z.string().nullish(),
   domain: z.string(),
 });
+
+export const DeviceTypeModel = z.object({
+  name: z.string(),
+  type: z.string(),
+});
