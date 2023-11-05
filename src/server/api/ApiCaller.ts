@@ -1,8 +1,5 @@
-import { TRPCError } from "@trpc/server";
-import { getHTTPStatusCodeFromError } from "@trpc/server/http";
 import { appRouter } from "~/server/api/root";
 import { db } from "~/server/db";
-import type { NextApiRequest, NextApiResponse } from "next";
 
 // Used to call TRPC procedures from the pages/api folder
 
