@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { deviceCaller } from "~/server/api/apiCaller";
+import { deviceCaller } from "~/server/api/ApiCaller";
 
 import { DeviceTypeModel } from "~/zod/types";
 
