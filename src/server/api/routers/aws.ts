@@ -16,7 +16,7 @@ import {
 
 export const AWSRouter = createTRPCRouter({
   sendMessage: publicProcedure
-    .input(z.object({ connectionId: z.string(), message: z.string() }))
+    .input(z.object({ connectionId: z.string(), action: z.string() }))
     .mutation(async ({ input, ctx }) => {
       try {
         const device = await ctx.db.device.findUnique({
@@ -30,7 +30,7 @@ export const AWSRouter = createTRPCRouter({
         }
 
         const callbackUrl = `https://${device.domain}/${device.stage}`;
-
+        
         const client = new ApiGatewayManagementApiClient({
           endpoint: callbackUrl,
           region: "us-east-1",
@@ -39,14 +39,15 @@ export const AWSRouter = createTRPCRouter({
         const requestParams = {
           ConnectionId: device.connectionId,
           Data: JSON.stringify({
-            action: "message",
-            content: input.message,
+            action: input.action,
+            open: 1,
           }),
         };
 
         const command = new PostToConnectionCommand(requestParams);
 
         const result = await client.send(command);
+        // return "Test";
         return JSON.stringify(result);
       } catch (error) {
         console.log("error: ", error);

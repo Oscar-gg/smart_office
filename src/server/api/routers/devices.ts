@@ -48,11 +48,16 @@ export const deviceRouter = createTRPCRouter({
     )
     .mutation(async ({ input, ctx }) => {
       try {
+        // Delete all devices with the same name, except the one with the same connectionId
         await ctx.db.device.deleteMany({
           where: {
-            OR: [{ connectionId: input.connectionId }],
+            AND: [
+              { name: input.name },
+              { NOT: { connectionId: input.connectionId } },
+            ],
           },
         });
+
         await ctx.db.device.update({
           where: {
             connectionId: input.connectionId,

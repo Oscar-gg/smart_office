@@ -13,3 +13,6 @@ export const DeviceTypeModel = z.object({
   name: z.string(),
   type: z.string(),
 });
+
+// Must match with nodeMCU
+export const DeviceDataType = z.enum(["temperature", "RFID", "light"]);

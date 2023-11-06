@@ -30,6 +30,12 @@ export default function MessageDemo() {
           >
             Light
           </button>
+          <button
+            className="rounded-md bg-slate-300 p-2"
+            onClick={() => setDataView("rfid")}
+          >
+            RFID
+          </button>
         </div>
         <div className="flex flex-row">
           <div className="flex w-1/2 flex-col p-2">
@@ -47,19 +53,25 @@ export default function MessageDemo() {
             )}
           </div>
           <div className="flex w-1/2 flex-col p-2">
-            {dataView === "temperature" ? (
-              <DisplayTemperature />
-            ) : dataView === "light" ? (
-              <DisplayLight />
-            ) : (
-              <p>No data view selected</p>
-            )}
+            <DisplaySwitch type={dataView} />
           </div>
         </div>
       </div>
     </Layout>
   );
 }
+
+const DisplaySwitch = ({ type }: { type: string }) => {
+  if (type === "temperature") {
+    return <DisplayTemperature />;
+  } else if (type === "light") {
+    return <DisplayLight />;
+  } else if (type === "rfid") {
+    return <DisplayRFID />;
+  } else {
+    return <div>Opción invalida: {type}</div>;
+  }
+};
 
 const h2tw = "bg-slate-400 rounded-lg w-fit p-2";
 const ptw = "bg-slate-200 rounded-lg w-fit p-2";
@@ -82,7 +94,7 @@ const DeviceContainer = ({ deviceId }: { deviceId: string }) => {
   }
 
   return (
-    <div className="m-2 flex flex-row flex-wrap rounded-md bg-slate-500 p-2 gap-y-2">
+    <div className="m-2 flex flex-row flex-wrap gap-y-2 rounded-md bg-slate-500 p-2">
       <div className="m-1 flex flex-row gap-x-2">
         <h2 className={h2tw}>Nombre: </h2>
         <p className={ptw}>{device?.name ?? "Sin nombre"}</p>
@@ -101,7 +113,7 @@ const DeviceContainer = ({ deviceId }: { deviceId: string }) => {
         <button
           className="w-fit rounded-md bg-green-300 p-2"
           onClick={() =>
-            mutation.mutate({ connectionId: deviceId, message: data })
+            mutation.mutate({ connectionId: deviceId, action: data })
           }
         >
           Enviar
@@ -153,3 +165,27 @@ const DisplayLight = () => {
     </div>
   );
 };
+
+const DisplayRFID = () => {
+  const { data: rfidLectures, isLoading } =
+    api.sensor.getRFIDLectures.useQuery();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  } else if (!rfidLectures || rfidLectures.length === 0) {
+    return <div>Rfid lectures not found</div>;
+  }
+
+  return (
+    <div className="m-2 flex flex-col flex-wrap rounded-md bg-slate-300 p-2">
+      {rfidLectures.map((lecture) => (
+        <div key={lecture.id}>
+          <p>RFID lecture: {lecture.value}</p>
+          <p>Time: {lecture.createdAt.toString()}</p>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+// {"action": "servo", "open": "1"}

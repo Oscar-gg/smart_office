@@ -3,7 +3,7 @@ import { db } from "~/server/db";
 
 // Used to call TRPC procedures from the pages/api folder
 
-export const deviceCaller = appRouter.device.createCaller({
+const systemContext = {
   session: {
     user: {
       id: "-1",
@@ -13,16 +13,10 @@ export const deviceCaller = appRouter.device.createCaller({
     expires: new Date(`${new Date().getFullYear() + 2}-01-01`).toISOString(),
   },
   db,
-});
+};
 
-export const awsCaller = appRouter.aws.createCaller({
-  session: {
-    user: {
-      id: "-1",
-      email: "@admin",
-      role: "system",
-    },
-    expires: new Date(`${new Date().getFullYear() + 2}-01-01`).toISOString(),
-  },
-  db,
-});
+export const deviceCaller = appRouter.device.createCaller(systemContext);
+
+export const awsCaller = appRouter.aws.createCaller(systemContext);
+
+export const sensorCaller = appRouter.sensor.createCaller(systemContext);
