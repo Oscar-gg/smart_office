@@ -2,14 +2,25 @@
 
 Iot project to manage office spaces, provide insights and analytics.
 
-This code corresponds to the serverless backend, where web clients make requests to and NodeMcu devices send data to (through websockets).
-For the NodeMcu code, please refer to [this repository]().
+This code corresponds to the serverless backend, where web clients make requests to and NodeMcu devices send data to.
+For the NodeMcu code, please refer to [this repository](https://github.com/Oscar-gg/smart_office_nodemcu).
+
+## Project explanation
+
+For a detailed explanation of the project, please refer to the [docs folder](./docs/general.md), which elaborates on some of the 
+technologies used and the architecture of the project.
+
 
 ## How to run
 
-We try to keep this project as simple as possible, so you can start with just the scaffolding we set up for you, and add additional things later when they become necessary.
+Run the server on localhost:3000:
 
-If you are not familiar with the different technologies used in this project, please refer to the respective docs. If you still are in the wind, please join our [Discord](https://t3.gg/discord) and ask for help.
+```bash
+git clone https://github.com/Oscar-gg/smart_office.git
+cd smart_office
+npm install
+npm run dev
+```
 
 ## Technologies used
 
