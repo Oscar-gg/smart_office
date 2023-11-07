@@ -24,28 +24,28 @@ export default async function handler(
 
     if (type === "temperature") {
       const temperature = z.number().parse(data);
-        await sensorCaller.addTemperature({
-            data: temperature,
-        });
+      await sensorCaller.addTemperature({
+        data: temperature,
+      });
     } else if (type === "RFID") {
-        const rfidLecture = z.string().parse(data);
-        await sensorCaller.addRFIDLecture({
-            data: rfidLecture,
-        });
-
+      const rfidLecture = z.string().parse(data);
+      await sensorCaller.addRFIDLecture({
+        data: rfidLecture,
+      });
     } else if (type === "light") {
-        const lightDetection = z.number().parse(data);
-        await sensorCaller.addLight({
-            data: lightDetection,
-        });
+      const lightDetection = z.string().parse(data);
+      await sensorCaller.addLight({
+        lightAfter: lightDetection,
+      });
+    } else if (type === "movement") {
+      await sensorCaller.registerMovement();
     } else {
-        throw new Error("Unknown data type");
+      throw new Error("Unknown data type");
     }
 
     res.status(200).json({
-        message: "Data recieved successfully",
-      });
-
+      message: "Data recieved successfully",
+    });
   } catch (error) {
     console.log("error: ", error);
     res.status(400).json({

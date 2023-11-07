@@ -36,6 +36,12 @@ export default function MessageDemo() {
           >
             RFID
           </button>
+          <button
+            className="rounded-md bg-slate-300 p-2"
+            onClick={() => setDataView("movement")}
+          >
+            Movement
+          </button>
         </div>
         <div className="flex flex-row">
           <div className="flex w-1/2 flex-col p-2">
@@ -68,6 +74,8 @@ const DisplaySwitch = ({ type }: { type: string }) => {
     return <DisplayLight />;
   } else if (type === "rfid") {
     return <DisplayRFID />;
+  } else if (type === "movement") {
+    return <DisplayMovement />;
   } else {
     return <div>Opción invalida: {type}</div>;
   }
@@ -136,8 +144,8 @@ const DisplayTemperature = () => {
   return (
     <div className="m-2 flex flex-col flex-wrap rounded-md bg-slate-300 p-2">
       {temperatures.map((temperature) => (
-        <div key={temperature.id}>
-          <p>Temperature: {temperature.value}</p>
+        <div key={temperature.id_temperature}>
+          <p>Temperature: {temperature.temp_registered}</p>
           <p>Time: {temperature.createdAt.toISOString()}</p>
         </div>
       ))}
@@ -157,9 +165,9 @@ const DisplayLight = () => {
   return (
     <div className="m-2 flex flex-col flex-wrap rounded-md bg-slate-300 p-2">
       {lightMeasurements.map((lightMeasure) => (
-        <div key={lightMeasure.id}>
-          <p>Temperature: {lightMeasure.value}</p>
-          <p>Time: {lightMeasure.createdAt.toISOString()}</p>
+        <div key={lightMeasure.id_light}>
+          <p>Light after: {lightMeasure.lightAfter}</p>
+          <p>Sesion: {lightMeasure.id_sesion}</p>
         </div>
       ))}
     </div>
@@ -179,9 +187,30 @@ const DisplayRFID = () => {
   return (
     <div className="m-2 flex flex-col flex-wrap rounded-md bg-slate-300 p-2">
       {rfidLectures.map((lecture) => (
-        <div key={lecture.id}>
-          <p>RFID lecture: {lecture.value}</p>
-          <p>Time: {lecture.createdAt.toString()}</p>
+        <div key={lecture.id_RFID}>
+          <p>RFID lecture: {lecture.id_RFID}</p>
+          <p>Detections: {lecture.detections}</p>
+        </div>
+      ))}
+    </div>
+  );
+};
+
+const DisplayMovement = () => {
+  const { data: movements, isLoading } = api.sensor.getMovement.useQuery();
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  } else if (!movements || movements.length === 0) {
+    return <div>Movements not found</div>;
+  }
+
+  return (
+    <div className="m-2 flex flex-col flex-wrap rounded-md bg-slate-300 p-2">
+      {movements.map((movement) => (
+        <div key={movement.id_movement}>
+          <p>Id of movement: {movement.id_movement}</p>
+          <p>Trigger time: {movement.triggerTime.toISOString()}</p>
         </div>
       ))}
     </div>

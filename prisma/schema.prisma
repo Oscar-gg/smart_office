@@ -15,17 +15,6 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Post {
-    id          Int      @id @default(sequence())
-    name        String
-    createdAt   DateTime @default(now())
-    updatedAt   DateTime @updatedAt
-    createdBy   User     @relation(fields: [createdById], references: [id])
-    createdById String
-
-    @@index([name])
-}
-
 // Necessary for Next auth
 model Account {
     id                       String  @id @default(cuid())
@@ -56,17 +45,67 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    username      String?   @unique
+    id            String       @id @default(cuid())
+    name          String
+    gender        String?
+    age           Int
+    email         String?      @unique
+    role          String?
+    id_RFID       String?      @unique
+    rfid          RFID?        @relation(fields: [id_RFID], references: [id_RFID])
+    sesiones      Sesion[]
     emailVerified DateTime?
     image         String?
-    organizations String?
-    role          String?
     accounts      Account[]
     sessions      Session[]
-    posts         Post[]
+    Preferences   Preferences?
+}
+
+model RFID {
+    id_RFID    String   @id
+    user       User?
+    active     Boolean  @default(false)
+    detections Int      @default(1)
+    sesiones   Sesion[]
+}
+
+model Sesion {
+    id_sesion        String            @id @default(cuid())
+    id_RFID          String
+    rfid             RFID?             @relation(fields: [id_RFID], references: [id_RFID])
+    id_user          String
+    user             User              @relation(fields: [id_user], references: [id])
+    sesionStart      DateTime          @default(now())
+    sesionEnd        DateTime?
+    LightConsumption LightConsumption?
+    Temperatures     Temperature[]
+}
+
+model Preferences {
+    id_user      String @id
+    user         User   @relation(fields: [id_user], references: [id])
+    temp_val_min Float
+    temp_val_max Float
+}
+
+model Temperature {
+    id_temperature  String   @id @default(cuid())
+    temp_registered Float
+    id_sesion       String?
+    createdAt       DateTime @default(now())
+    sesion          Sesion?  @relation(fields: [id_sesion], references: [id_sesion])
+}
+
+model LightConsumption {
+    id_light   String  @id @default(cuid())
+    id_sesion  String? @unique
+    sesion     Sesion? @relation(fields: [id_sesion], references: [id_sesion])
+    lightAfter String?
+}
+
+model Movement {
+    id_movement String   @id @default(cuid())
+    triggerTime DateTime @default(now())
 }
 
 model Device {
@@ -75,27 +114,6 @@ model Device {
     type         String?
     stage        String
     domain       String
-}
-
-model Temperature {
-    id        Int      @id @default(sequence())
-    value     Float
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
-model LightLevel {
-    id        Int      @id @default(sequence())
-    value     Float
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-}
-
-model RFIDLectures {
-    id        Int      @id @default(sequence())
-    value     String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
 }
 
 model VerificationToken {
