@@ -9,7 +9,6 @@ import { Layout } from "~/components/layout/layout";
 import { api } from "~/utils/api";
 
 export default function MessageDemo() {
-  const hello = api.post.hello.useQuery({ text: "from tRPC" });
   const { data: deviceIds, isLoading } = api.device.getDeviceIds.useQuery();
 
   const [dataView, setDataView] = useState<string>("temperature");

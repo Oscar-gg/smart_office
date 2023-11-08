@@ -18,16 +18,24 @@ export const sensorRouter = createTRPCRouter({
     .input(z.object({ lightAfter: z.string(), sesion: z.string().optional() }))
     .mutation(async ({ input, ctx }) => {
       try {
-        await ctx.db.lightConsumption.create({
-          data: {
-            lightAfter: input.lightAfter,
-            sesion: {
-              connect: {
-                id_sesion: input.sesion,
+        input.sesion
+          ? await ctx.db.lightConsumption.create({
+              data: {
+                lightAfter: input.lightAfter,
+                sesion: {
+                  connect: {
+                    id_sesion: input.sesion,
+                  },
+                },
               },
-            },
-          },
-        });
+            })
+          : await ctx.db.lightConsumption.create({
+              data: {
+                lightAfter: input.lightAfter,
+                sesion: {
+                },
+              },
+            });
         return true;
       } catch (error) {
         console.log("error: ", error);
