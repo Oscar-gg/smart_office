@@ -63,7 +63,6 @@ export const authOptions: NextAuthOptions = {
           name: profile.name ?? profile.login,
           email: profile.email,
           image: profile.avatar_url,
-          organizations: profile.organizations_url,
         };
       },
     }),

@@ -48,7 +48,7 @@ model User {
     id            String       @id @default(cuid())
     name          String
     gender        String?
-    age           Int
+    age           Int?
     email         String?      @unique
     role          String?
     id_RFID       String?      @unique
