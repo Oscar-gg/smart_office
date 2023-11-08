@@ -120,7 +120,7 @@ const DeviceContainer = ({ deviceId }: { deviceId: string }) => {
         <button
           className="w-fit rounded-md bg-green-300 p-2"
           onClick={() =>
-            mutation.mutate({ connectionId: deviceId, action: data })
+            mutation.mutate({ connectionId: deviceId, message: data })
           }
         >
           Enviar
