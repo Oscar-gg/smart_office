@@ -1,12 +1,13 @@
-import { signIn, signOut, useSession } from "next-auth/react";
-import Head from "next/head";
-import Link from "next/link";
-import { BiCheckbox, BiSolidCheckboxChecked } from "react-icons/bi";
-
 import { useState } from "react";
 import { Layout } from "~/components/layout/layout";
 
 import { api } from "~/utils/api";
+
+// The following messages are supported:
+// {"action": "servo", "open": "1"}
+// {"action": "setPreferences", "upperBound": "100", "lowerBound": "0", "interval": "1000"}
+// {"action": "startWorkTime"}
+// {"action": "endWorkTime"}
 
 export default function MessageDemo() {
   const { data: deviceIds, isLoading } = api.device.getDeviceIds.useQuery();
@@ -40,6 +41,12 @@ export default function MessageDemo() {
             onClick={() => setDataView("movement")}
           >
             Movement
+          </button>
+          <button
+            className="rounded-md bg-slate-300 p-2"
+            onClick={() => setDataView("worktime")}
+          >
+            Worktime
           </button>
         </div>
         <div className="flex flex-row">
@@ -75,6 +82,8 @@ const DisplaySwitch = ({ type }: { type: string }) => {
     return <DisplayRFID />;
   } else if (type === "movement") {
     return <DisplayMovement />;
+  } else if (type === "worktime") {
+    return <WorkTime />;
   } else {
     return <div>Opción invalida: {type}</div>;
   }
@@ -215,5 +224,23 @@ const DisplayMovement = () => {
     </div>
   );
 };
+const WorkTime = () => {
+  const { data: workTimes, isLoading } = api.sensor.getWorkingTime.useQuery();
 
-// {"action": "servo", "open": "1"}
+  if (isLoading) {
+    return <div>Loading...</div>;
+  } else if (!workTimes || workTimes.length === 0) {
+    return <div>WorkTimes not found</div>;
+  }
+
+  return (
+    <div className="m-2 flex flex-col flex-wrap rounded-md bg-slate-300 p-2">
+      {workTimes.map((workTime) => (
+        <div key={workTime.id_sesion}>
+          <p>Work Time: {workTime.workTime}</p>
+          <p>Session: {workTime.id_sesion ?? "Indefinido"}</p>
+        </div>
+      ))}
+    </div>
+  );
+};

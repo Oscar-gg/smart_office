@@ -39,6 +39,11 @@ export default async function handler(
       });
     } else if (type === "movement") {
       await sensorCaller.registerMovement();
+    } else if (type == "workTime") {
+      const time = z.number().parse(data);
+      await sensorCaller.addWorkTime({
+        data: time,
+      });
     } else {
       throw new Error("Unknown data type");
     }

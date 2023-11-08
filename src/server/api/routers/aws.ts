@@ -1,7 +1,5 @@
 import { z } from "zod";
 
-import { DeviceModel } from "~/zod/types";
-
 import {
   systemProcedure,
   createTRPCRouter,
