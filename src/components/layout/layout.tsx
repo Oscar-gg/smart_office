@@ -6,10 +6,12 @@ export const Layout = ({
   children,
   title = "Smart Office",
   description = "Smart Office",
+  mainClassName = "",
 }: {
   children: React.ReactNode;
   title?: string;
   description?: string;
+  mainClassName?: string;
 }) => {
   const routes = [
     { name: "Home", path: "/" },
@@ -26,7 +28,11 @@ export const Layout = ({
     <>
       <Head>
         <title>{title}</title>
-        <meta name="description" content={description} />
+        <meta
+          name="description"
+          content={description}
+          className={mainClassName}
+        />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <NavBar routes={routes} />
