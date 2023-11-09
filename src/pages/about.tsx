@@ -11,7 +11,7 @@ export default function Home() {
 </div>
 
 <div className="container flex flex-col items-center justify-center mt-5 max-w-[100%]">
-    <h1 className="text-7xl font-smart">¿Quiénes Somos?</h1>
+    <h1 className="text-7xl font-smart pl-[20%] sm:pl-[0%]">¿Quiénes Somos?</h1>
     
 
     <p className="font-regular text-justify items-center justify-center px-[15%] sm:px-[25%] place-content-center pt-[3%]">

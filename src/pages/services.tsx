@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <Layout mainClassName="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#ffffff] to-[#ffffff]">
  <div className="w-full h-[300px] relative">
-    <img src="https://www.microsoft.com/es-mx/microsoft-365/blog/wp-content/uploads/sites/27/2019/05/New-to-Microsoft-365-BANNER.png" alt="" className="w-full h-full object-cover p-0 m-0" />
+    <img src="https://www.cohesity.com/wp-content/new_media/2020/09/it-best-practices-for-a-fully-remote-workforce-banner-1.png" alt="" className="w-full h-full object-cover p-0 m-0" />
 </div>
 
 <div className="container flex flex-col items-center justify-center mt-5 max-w-[100%]">
@@ -15,8 +15,8 @@ export default function Home() {
 
 
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8 items-center justify-center">
-          <img className="sm:p-[5%] sm:mt-[-2%]"
-            src="https://www.decorilla.com/online-decorating/wp-content/uploads/2023/02/Home-office-inspiration-by-Annie-L.jpg"
+          <img className="sm:p-[5%] sm:mt-[-2%] p-[5%]"
+            src="https://images.steelcase.com/image/upload/c_fill,q_auto,f_auto,h_656,w_1166/v1632763487/www.steelcase.com/2021/09/27/21-0161719_16x9.jpg"
             alt=""
           />
 
