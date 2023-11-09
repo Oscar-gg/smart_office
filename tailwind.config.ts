@@ -8,7 +8,8 @@ export default {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
         smart: ["'Genos', 'sans-serif'"],
-        fancy: ["'Playfair Display', serif"]
+        fancy: ["'Playfair Display', serif"],
+        regular: ["'Raleway', sans-serif"]
       },
     },
   },
