@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-    // provider = "sqlite"
-    provider = "cockroachdb"
+    provider = "sqlite"
+    // provider = "cockroachdb"
     // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
     // Further reading:
     // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
@@ -62,17 +62,14 @@ model User {
 }
 
 model RFID {
-    id_RFID    String   @id
+    id_RFID    String  @id
     user       User?
-    active     Boolean  @default(false)
-    detections Int      @default(1)
-    sesiones   Sesion[]
+    active     Boolean @default(false)
+    detections Int     @default(1)
 }
 
 model Sesion {
     id_sesion        String            @id @default(cuid())
-    id_RFID          String
-    rfid             RFID?             @relation(fields: [id_RFID], references: [id_RFID])
     id_user          String
     user             User              @relation(fields: [id_user], references: [id])
     sesionStart      DateTime          @default(now())
@@ -105,8 +102,9 @@ model LightConsumption {
 }
 
 model Movement {
-    id_movement String   @id @default(cuid())
-    triggerTime DateTime @default(now())
+    id_movement   String   @id @default(cuid())
+    triggerTime   DateTime @default(now())
+    duringSession Boolean
 }
 
 model Device {
@@ -128,6 +126,12 @@ model VerificationToken {
 model WorkingTime {
     id_time   String  @id @default(cuid())
     workTime  Float
-    id_sesion String?  @unique
+    id_sesion String? @unique
     sesion    Sesion? @relation(fields: [id_sesion], references: [id_sesion])
+}
+
+model Log {
+    id_log    String   @id @default(cuid())
+    createdAt DateTime @default(now())
+    message   String
 }

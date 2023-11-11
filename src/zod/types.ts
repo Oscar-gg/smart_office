@@ -1,13 +1,6 @@
 import { z } from "zod";
 
-export const DeviceModel = z.object({
-  id: z.string(),
-  name: z.string(),
-  type: z.string(),
-  connectionId: z.string(),
-  stage: z.string().nullish(),
-  domain: z.string(),
-});
+// Types for the API
 
 export const DeviceTypeModel = z.object({
   name: z.string(),
@@ -22,3 +15,10 @@ export const DeviceDataType = z.enum([
   "movement",
   "workTime",
 ]);
+
+export const CommandObject = z.object({
+  action: z.enum(["startWorkTime", "endWorkTime", "getSessionLight", "servo"]),
+  data: z.string().optional(),
+  id: z.string().optional(),
+  open: z.number().optional(),
+});

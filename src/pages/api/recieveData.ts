@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 
-import { sensorCaller } from "~/server/api/ApiCaller";
+import { sensorCaller, sessionCaller } from "~/server/api/ApiCaller";
 
 import { DeviceDataType } from "~/zod/types";
 import { z } from "zod";
@@ -8,6 +8,8 @@ import { z } from "zod";
 type ResponseData = {
   message: string;
 };
+
+// Endpoint to handle all data inputs from the sensors.
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,7 +20,7 @@ export default async function handler(
   // console.log("body", req.body);
   // console.log("query", req.query);
 
-  const { dataType, data } = req.body;
+  const { dataType, data, id } = req.body;
   try {
     const type = DeviceDataType.parse(dataType);
 
@@ -32,17 +34,24 @@ export default async function handler(
       await sensorCaller.addRFIDLecture({
         data: rfidLecture,
       });
+      await sessionCaller.sessionManagement({
+        rfidLecture,
+      });
     } else if (type === "light") {
       const lightDetection = z.string().parse(data);
+      const id_ = z.string().parse(id);
       await sensorCaller.addLight({
         lightAfter: lightDetection,
+        sessionId: id_,
       });
     } else if (type === "movement") {
       await sensorCaller.registerMovement();
     } else if (type == "workTime") {
       const time = z.number().parse(data);
+      const id_ = z.string().parse(id);
       await sensorCaller.addWorkTime({
         data: time,
+        sesion: id_,
       });
     } else {
       throw new Error("Unknown data type");
