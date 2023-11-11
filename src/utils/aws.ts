@@ -1,15 +1,15 @@
 // Class to send commands to IoT devices
 
-import { z } from "zod";
+import type { z } from "zod";
 
 import {
   ApiGatewayManagementApiClient,
   PostToConnectionCommand,
 } from "@aws-sdk/client-apigatewaymanagementapi";
 
-import { PrismaClient, Device } from "@prisma/client";
+import type { PrismaClient, Device } from "@prisma/client";
 
-import { CommandObject } from "~/zod/types";
+import type { CommandObject } from "~/zod/types";
 
 export const startWorkTime = async ({ db }: { db: PrismaClient }) => {
   const device = await getWorkTimeDevice({ db });

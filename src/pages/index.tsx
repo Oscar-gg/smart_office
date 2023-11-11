@@ -1,18 +1,17 @@
-import { signIn, signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { Layout } from "~/components/layout/layout";
 
 export default function Home() {
   return (
     <Layout mainClassName="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#ffffff] to-[#ffffff]">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 sm:py-8 max-w-[100%]">
+      <div className="container flex max-w-[100%] flex-col items-center justify-center gap-12 px-4 py-16 sm:py-8">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
           <div className="items-center text-center">
             {/* <img className="h-auto w-[65%] ml-[20%]" src="https://39514401.fs1.hubspotusercontent-na1.net/hubfs/39514401/logosmartoffice.png" alt="" /> */}
-            <h1 className="text-blue font-smart ml-[5%] mt-[15%] pt-6 text-7xl tracking-tight sm:text-[6rem]">
+            <h1 className="text-blue ml-[5%] mt-[15%] pt-6 font-smart text-7xl tracking-tight sm:text-[6rem]">
               Smart Office
             </h1>
-            <p className="font-fancy pt-[7%] text-center text-2xl ">
+            <p className="pt-[7%] text-center font-fancy text-2xl ">
               {" "}
               Rentar oficinas desde tu teléfono: fácil y rápido.{" "}
             </p>
@@ -27,8 +26,9 @@ export default function Home() {
 
         <h1 className="font-smart text-4xl"> Oficinas Disponibles </h1>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8 items-center justify-center">
-          <img className=""
+        <div className="grid grid-cols-1 items-center justify-center gap-4 sm:grid-cols-2 md:gap-8">
+          <img
+            className=""
             src="https://www.decorilla.com/online-decorating/wp-content/uploads/2023/02/Home-office-inspiration-by-Annie-L.jpg"
             alt=""
           />
@@ -58,23 +58,5 @@ export default function Home() {
         </div>
       </div>
     </Layout>
-  );
-}
-
-function AuthShowcase() {
-  const { data: sessionData } = useSession();
-
-  return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      <p className="text-center text-2xl text-white">
-        {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-      </p>
-      <button
-        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-        onClick={sessionData ? () => void signOut() : () => void signIn()}
-      >
-        {sessionData ? "Sign out" : "Sign in"}
-      </button>
-    </div>
   );
 }

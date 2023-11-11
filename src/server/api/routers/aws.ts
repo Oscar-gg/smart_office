@@ -35,7 +35,7 @@ export const AWSRouter = createTRPCRouter({
         });
 
         // Example input: JSON.parse('{"action": "hola"}')
-        
+
         const jsonObject = JSON.parse(input.message);
 
         const requestParams = {
