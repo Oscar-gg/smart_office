@@ -7,6 +7,7 @@ import {
 } from "next-auth";
 
 import GitHubProvider, { type GithubProfile } from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 
 import { env } from "~/env.mjs";
 import { db } from "~/server/db";
@@ -45,18 +46,21 @@ export const authOptions: NextAuthOptions = {
       ...session,
       user: {
         ...session.user,
-          id: user.id,
-          organizations: user.organizations,
-          role: user.role,
+        id: user.id,
+        organizations: user.organizations,
+        role: user.role,
       },
     }),
   },
   adapter: PrismaAdapter(db),
   providers: [
+    GoogleProvider({
+      clientId: env.GOOGLE_CLIENT_ID,
+      clientSecret: env.GOOGLE_CLIENT_SECRET,
+    }),
     GitHubProvider({
       clientId: env.GITHUB_CLIENT_ID,
       clientSecret: env.GITHUB_CLIENT_SECRET,
-      // Override profile to include org link to validate user is part of the org
       profile(profile: GithubProfile) {
         return {
           id: profile.id.toString(),
