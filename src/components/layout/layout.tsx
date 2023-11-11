@@ -15,13 +15,8 @@ export const Layout = ({
 }) => {
   const routes = [
     { name: "Home", path: "/" },
-    { name: "Renta", path: "/renta" },
     { name: "Services", path: "/services" },
-    {
-      name: "About",
-      path: "https://github.com/Oscar-gg/smart_office",
-      target: "_blank" as const,
-    },
+    {name: "About", path: "/about" },
   ];
 
   return (
@@ -34,6 +29,8 @@ export const Layout = ({
           className={mainClassName}
         />
         <link rel="icon" href="/favicon.ico" />
+        <link href="https://fonts.googleapis.com/css2?family=Genos:wght@600&family=Playfair+Display&family=Raleway&family=Roboto+Condensed&display=swap" rel="stylesheet"/>
+
       </Head>
       <NavBar routes={routes} />
       <main>{children}</main>

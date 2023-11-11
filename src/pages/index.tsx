@@ -5,7 +5,7 @@ import { Layout } from "~/components/layout/layout";
 export default function Home() {
   return (
     <Layout mainClassName="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#ffffff] to-[#ffffff]">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 sm:py-8">
+      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16 sm:py-8 max-w-[100%]">
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
           <div className="items-center text-center">
             {/* <img className="h-auto w-[65%] ml-[20%]" src="https://39514401.fs1.hubspotusercontent-na1.net/hubfs/39514401/logosmartoffice.png" alt="" /> */}
@@ -27,8 +27,8 @@ export default function Home() {
 
         <h1 className="font-smart text-4xl"> Oficinas Disponibles </h1>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8">
-          <img
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8 items-center justify-center">
+          <img className=""
             src="https://www.decorilla.com/online-decorating/wp-content/uploads/2023/02/Home-office-inspiration-by-Annie-L.jpg"
             alt=""
           />
@@ -42,7 +42,7 @@ export default function Home() {
               {" "}
               Oficina Individual
             </h3>
-            <div className="font-fancy text-lg">
+            <div className="font-regular text-lg">
               Disfruta de la comodidad y la productividad en nuestra oficina
               individual, diseñada para ofrecerte un espacio tranquilo y
               acogedor. Esta oficina cuenta con su propio sistema de
