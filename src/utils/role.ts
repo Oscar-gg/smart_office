@@ -1,52 +1,32 @@
 // interface Roles {
 //   role:
+//     | "system"
 //     | "admin"
-//     | "organizationMember"
-//     | "communityMember"
+//     | "paidUser"
 //     | "authenticated"
 //     | "unauthenticated";
 // }
 
-const adminOrUpper = ["admin"];
-const organizationMemberOrUpper = [...adminOrUpper, "organizationMember"];
-const communityMemberOrUpper = [
-  ...organizationMemberOrUpper,
-  "communityMember",
-];
-const authenticatedOrUpper = [...communityMemberOrUpper, "authenticated"];
+const systemOrUpper = ["admin"];
+const adminOrUpper = [...systemOrUpper, "admin"];
+const paidUserOrUpper = [...adminOrUpper, "paidUser"];
+const authenticatedOrUpper = [...paidUserOrUpper, "authenticated"];
 const unauthenticatedOrUpper = [...authenticatedOrUpper, "unauthenticated"];
 
 const roleOrUpper: Record<string, string[]> = {
+  system: systemOrUpper,
   admin: adminOrUpper,
-  organizationMember: organizationMemberOrUpper,
-  communityMember: communityMemberOrUpper,
+  paidUser: paidUserOrUpper,
   authenticated: authenticatedOrUpper,
   unauthenticated: unauthenticatedOrUpper,
 };
 
 const upperRole: Record<string, string[]> = {
-  admin: adminOrUpper,
-  organizationMember: adminOrUpper,
-  communityMember: organizationMemberOrUpper,
-  authenticated: communityMemberOrUpper,
+  system: systemOrUpper,
+  admin: systemOrUpper,
+  paidUser: adminOrUpper,
+  authenticated: paidUserOrUpper,
   unauthenticated: authenticatedOrUpper,
-};
-
-const unauthenticatedOrLower = ["unauthenticated"];
-const authenticatedOrLower = [...unauthenticatedOrLower, "authenticated"];
-const communityMemberOrLower = [...authenticatedOrLower, "communityMember"];
-const organizationMemberOrLower = [
-  ...communityMemberOrLower,
-  "organizationMember",
-];
-const adminOrLower = [...organizationMemberOrLower, "admin"];
-
-export const roleOrLower: Record<string, string[]> = {
-  admin: adminOrLower,
-  organizationMember: organizationMemberOrLower,
-  communityMember: communityMemberOrLower,
-  authenticated: authenticatedOrLower,
-  unauthenticated: unauthenticatedOrLower,
 };
 
 // 1: allowed
@@ -101,12 +81,3 @@ export const getHighestRole = (roles: UserRole[], startRole?: string) => {
   return highestRole;
 };
 
-export const getRoleOrLower = (role: string | undefined | null) => {
-  if (!role) return unauthenticatedOrLower;
-
-  const roles = roleOrLower[role];
-
-  if (!roles) return unauthenticatedOrLower;
-
-  return roles;
-};
