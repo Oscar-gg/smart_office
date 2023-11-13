@@ -7,6 +7,10 @@
 //     | "unauthenticated";
 // }
 
+import { PrismaClient } from "@prisma/client";
+
+// Functions for comparing roles
+
 const systemOrUpper = ["admin"];
 const adminOrUpper = [...systemOrUpper, "admin"];
 const paidUserOrUpper = [...adminOrUpper, "paidUser"];
@@ -81,3 +85,29 @@ export const getHighestRole = (roles: UserRole[], startRole?: string) => {
   return highestRole;
 };
 
+// Functions for updating roles when signing in
+
+export const updateRole = async (
+  email: string | null | undefined,
+  prisma: PrismaClient,
+) => {
+  if (email) {
+    const isAdmin = await prisma.admin.findUnique({
+      where: {
+        email: email,
+      },
+    });
+
+    if (isAdmin) return "admin";
+
+    const isPaidUser = await prisma.paidUser.findUnique({
+      where: {
+        email: email,
+      },
+    });
+
+    if (isPaidUser) return "paidUser";
+  }
+
+  return "authenticated";
+};

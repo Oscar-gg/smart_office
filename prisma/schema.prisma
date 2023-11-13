@@ -135,3 +135,11 @@ model Log {
     createdAt DateTime @default(now())
     message   String
 }
+
+model Admin {
+    email String @unique
+}
+
+model paidUser {
+    email String @unique
+}
