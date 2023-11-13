@@ -2,7 +2,10 @@ import { createTRPCRouter } from "~/server/api/trpc";
 import { deviceRouter } from "~/server/api/routers/devices";
 import { AWSRouter } from "~/server/api/routers/aws";
 import { sensorRouter } from "~/server/api/routers/sensors";
-import { sessionRouter } from "./routers/session";
+import { sessionRouter } from "~/server/api/routers/session";
+import { userRouter } from "~/server/api/routers/user";
+import { logRouter } from "~/server/api/routers/logs";
+import { rfidRouter } from "~/server/api/routers/rfid";
 
 /**
  * This is the primary router for your server.
@@ -14,6 +17,9 @@ export const appRouter = createTRPCRouter({
   aws: AWSRouter,
   sensor: sensorRouter,
   session: sessionRouter,
+  user: userRouter,
+  log: logRouter,
+  rfid: rfidRouter,
 });
 
 // export type definition of API
