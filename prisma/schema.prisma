@@ -67,7 +67,7 @@ model RFID {
     user       User?
     active     Boolean  @default(false)
     detections Int      @default(1)
-    updatedAt  DateTime @updatedAt
+    updatedAt  DateTime @default(now()) @updatedAt
 }
 
 model Sesion {

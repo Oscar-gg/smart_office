@@ -85,7 +85,7 @@ export const NavBar = ({
             <div className="flex flex-shrink-0 items-center">
               <img
                 className="h-8 w-auto"
-                src="https://39514401.fs1.hubspotusercontent-na1.net/hubfs/39514401/logosmartoffice.png"
+                src="favicon.png"
                 alt="Smart Office"
               />
             </div>

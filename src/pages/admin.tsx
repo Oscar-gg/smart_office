@@ -13,6 +13,8 @@ import { LogTable } from "~/components/general/LogTable";
 // {"action": "endWorkTime"}
 
 const h2tw = "bg-slate-400 rounded-sm w-fit p-2 ml-auto mr-auto mb-2 mt-2";
+const cardWrappertw =
+  "m-2 flex flex-row flex-wrap rounded-md bg-slate-300 p-2 gap-x-4 gap-y-4";
 
 export default function MessageDemo() {
   const [pageView, setPageView] = useState<string>("Devices");
@@ -79,7 +81,7 @@ const PageSwitch = ({ page }: { page: string }) => {
 const Devices = () => {
   const { data: deviceIds, isLoading } = api.device.getDeviceIds.useQuery();
   return (
-    <div className="m-3 flex flex-row">
+    <div className={cardWrappertw}>
       {isLoading ? (
         <p>Loading...</p>
       ) : deviceIds && deviceIds.length > 0 ? (
@@ -102,7 +104,7 @@ const Users = () => {
     return <div>Users not found</div>;
   }
   return (
-    <div className="m-2 flex flex-row flex-wrap rounded-md bg-slate-300 p-2">
+    <div className={cardWrappertw}>
       {userIds.map((userId) => (
         <UserCard id={userId.id} key={userId.id} />
       ))}
@@ -119,84 +121,10 @@ const RFID = () => {
     return <div>RFIDs not found</div>;
   }
   return (
-    <div className="m-2 flex flex-row flex-wrap rounded-md bg-slate-300 p-2">
+    <div className={cardWrappertw}>
       {rfidIds.map((rfidId) => (
         <RfidCard id={rfidId.id_RFID} key={rfidId.id_RFID} />
       ))}
-    </div>
-  );
-};
-
-const Logs = () => {
-  const { data: logs, isLoading } = api.log.getLogs.useQuery();
-
-  if (isLoading) {
-    return <div>Loading...</div>;
-  } else if (!logs || logs.length === 0) {
-    return <div>Logs not found</div>;
-  }
-
-  return (
-    <div className="m-2 flex w-fit flex-row flex-wrap rounded-md bg-slate-300 p-2">
-      {logs.map((log) => (
-        <div key={log.id_log} className="w-fit">
-          <p>Id: {log.id_log}</p>
-          <p>Message: {log.message}</p>
-          <p>Time: {log.createdAt.toLocaleTimeString()}</p>
-        </div>
-      ))}
-    </div>
-  );
-};
-
-const ptw = "bg-slate-200 rounded-lg w-fit p-2";
-
-const DeviceContainer = ({ deviceId }: { deviceId: string }) => {
-  const { data: device, isLoading } = api.device.getDeviceInfo.useQuery({
-    connectionId: deviceId,
-  });
-
-  const mutation = api.aws.sendMessage.useMutation({
-    onSuccess: (data) => {
-      alert(data);
-    },
-  });
-
-  const dialogRef = useRef<HTMLDialogElement>(null);
-
-  const [data, setData] = useState<string>("");
-
-  if (isLoading || !device) {
-    return <div>Loading...</div>;
-  }
-
-  return (
-    <div className="m-2 flex flex-row flex-wrap gap-y-2 rounded-md bg-slate-500 p-2">
-      <dialog ref={dialogRef}></dialog>
-      <div className="m-1 flex flex-row gap-x-2">
-        <h2 className={h2tw}>Nombre: </h2>
-        <p className={ptw}>{device?.name ?? "Sin nombre"}</p>
-      </div>
-      <div className="m-1 flex flex-row gap-x-2">
-        <h2 className={h2tw}>Connection ID: </h2>
-        <p className={ptw}>{device.connectionId}</p>
-      </div>
-      <div className="m-1 flex flex-row gap-x-2">
-        <h2 className={h2tw}>Tipo: </h2>
-        <p className={ptw}>{device.type ?? "Sin tipo"}</p>
-      </div>
-      <div className="flex flex-col gap-y-3">
-        <h2 className={h2tw}>Enviar mensaje:</h2>
-        <input value={data} onChange={(e) => setData(e.target.value)} />
-        <button
-          className="w-fit rounded-md bg-green-300 p-2"
-          onClick={() =>
-            mutation.mutate({ connectionId: deviceId, message: data })
-          }
-        >
-          Enviar
-        </button>
-      </div>
     </div>
   );
 };
