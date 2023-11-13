@@ -10,10 +10,40 @@ export default createNextApiHandler({
   createContext: createTRPCContext,
   onError:
     env.NODE_ENV === "development"
-      ? ({ path, error }) => {
+      ? ({ path, error, ctx }) => {
           console.error(
-            `❌ tRPC failed on ${path ?? "<no-path>"}: ${error.message}`
+            `❌ tRPC failed on ${path ?? "<no-path>"}: ${error.message}`,
           );
+
+          ctx?.session?.user.id
+            ? ctx?.db.log.create({
+                data: {
+                  code: error.code,
+                  message: error.message,
+                  id_user: ctx?.session?.user.id,
+                },
+              })
+            : ctx?.db.log.create({
+                data: {
+                  code: error.code,
+                  message: error.message,
+                },
+              });
         }
-      : undefined,
+      : ({ error, ctx }) => {
+          ctx?.session?.user.id
+            ? ctx?.db.log.create({
+                data: {
+                  code: error.code,
+                  message: error.message,
+                  id_user: ctx?.session?.user.id,
+                },
+              })
+            : ctx?.db.log.create({
+                data: {
+                  code: error.code,
+                  message: error.message,
+                },
+              });
+        },
 });

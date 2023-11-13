@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-    // provider = "sqlite"
-    provider = "cockroachdb"
+    provider = "sqlite"
+    // provider = "cockroachdb"
     // NOTE: When using mysql or sqlserver, uncomment the @db.Text annotations in model Account below
     // Further reading:
     // https://next-auth.js.org/adapters/prisma#create-the-prisma-schema
@@ -59,13 +59,15 @@ model User {
     accounts      Account[]
     sessions      Session[]
     Preferences   Preferences?
+    Logs          Log[]
 }
 
 model RFID {
-    id_RFID    String  @id
+    id_RFID    String   @id
     user       User?
-    active     Boolean @default(false)
-    detections Int     @default(1)
+    active     Boolean  @default(false)
+    detections Int      @default(1)
+    updatedAt  DateTime @updatedAt
 }
 
 model Sesion {
@@ -133,7 +135,10 @@ model WorkingTime {
 model Log {
     id_log    String   @id @default(cuid())
     createdAt DateTime @default(now())
+    code      String   @default("INFO")
     message   String
+    id_user   String?
+    user      User?    @relation(fields: [id_user], references: [id])
 }
 
 model Admin {
