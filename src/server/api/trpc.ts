@@ -123,9 +123,19 @@ export const publicProcedure = t.procedure;
 
 /** Reusable middleware that enforces users are logged in before running the procedure. */
 const enforceUserIsAuthed = t.middleware(async ({ ctx, next, meta }) => {
+
   if (!ctx.session || !ctx.session.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
+
+  await ctx.db.user.update({
+    where: {
+      id: ctx.session.user.id,
+    },
+    data: {
+      lastLogin: new Date(),
+    },
+  });
 
   const role = ctx.session.user.role;
   if (meta?.role === "system" && role !== "system") {

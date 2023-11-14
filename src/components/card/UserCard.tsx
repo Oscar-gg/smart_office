@@ -17,7 +17,7 @@ export const UserCard = ({ id }: { id: string }) => {
     );
   }
   return (
-    <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800">
+    <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800 p-2">
       <div className="flex justify-end px-4 pt-4"></div>
       <div className="flex flex-col items-center pb-10">
         <ValidImage

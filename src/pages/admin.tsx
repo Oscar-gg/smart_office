@@ -12,17 +12,16 @@ import { LogTable } from "~/components/general/LogTable";
 // {"action": "startWorkTime"}
 // {"action": "endWorkTime"}
 
-const h2tw = "bg-slate-400 rounded-sm w-fit p-2 ml-auto mr-auto mb-2 mt-2";
 const cardWrappertw =
-  "m-2 flex flex-row flex-wrap rounded-md bg-slate-300 p-2 gap-x-4 gap-y-4";
+  "m-2 flex flex-row flex-wrap rounded-md bg-slate-300 p-2 gap-x-4 gap-y-4 justify-center lg:justify-normal";
 
 export default function MessageDemo() {
   const [pageView, setPageView] = useState<string>("Devices");
 
   return (
     <Layout>
-      <div className="flex w-full flex-col flex-wrap justify-center gap-y-4 ">
-        <div className="flex flex-row flex-wrap items-center justify-center gap-x-4 bg-blue-200 p-3">
+      <div className="flex w-full flex-col flex-wrap justify-center gap-y-4">
+        <div className="flex flex-row flex-wrap items-center justify-center gap-x-4 bg-blue-200 p-3 w-full gap-y-2">
           <button
             className="rounded-md bg-slate-300 p-2"
             onClick={() => setPageView("Devices")}
@@ -54,7 +53,7 @@ export default function MessageDemo() {
             Statistics
           </button>
         </div>
-        <div className="m-3">
+        <div className="w-full pr-2 pl-2">
           <PageSwitch page={pageView} />
         </div>
       </div>

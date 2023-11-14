@@ -13,6 +13,9 @@ export const rfidRouter = createTRPCRouter({
       select: {
         id_RFID: true,
       },
+      orderBy: {
+        updatedAt: "desc",
+      }
     });
   }),
 
@@ -55,7 +58,8 @@ export const rfidRouter = createTRPCRouter({
               id_RFID: true,
             },
           });
-          if (hadRFID) {
+
+          if (hadRFID?.id_RFID) {
             return "El usuario seleccionado ya tiene un RFID asignado.";
           }
 
