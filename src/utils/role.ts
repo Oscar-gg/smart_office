@@ -7,7 +7,7 @@
 //     | "unauthenticated";
 // }
 
-import { PrismaClient } from "@prisma/client";
+import type { PrismaClient } from "@prisma/client";
 
 // Functions for comparing roles
 

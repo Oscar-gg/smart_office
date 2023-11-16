@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Layout } from "~/components/layout/layout";
 import { UserCard } from "~/components/card/UserCard";
 import { api } from "~/utils/api";

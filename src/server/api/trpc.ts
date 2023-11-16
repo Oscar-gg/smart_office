@@ -113,8 +113,8 @@ const t = initTRPC
 export const createTRPCRouter = t.router;
 
 // Middleware that updates the lastRequest field on the user
-const lastRequest = t.middleware(async ({ ctx, next, meta }) => {
-  if (ctx.session && ctx.session.user) {
+const lastRequest = t.middleware(async ({ ctx, next }) => {
+  if (ctx.session && ctx.session.user && ctx.session.user.id != "-1") {
     await ctx.db.user.update({
       where: {
         id: ctx.session.user.id,
