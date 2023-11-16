@@ -1,4 +1,5 @@
 import type { PrismaClient } from "@prisma/client";
+import { TRPCError } from "@trpc/server";
 
 import { endWorkTime, getSessionLight, startWorkTime } from "~/utils/aws";
 
@@ -152,9 +153,6 @@ export const isRfidActive = async ({
   db: PrismaClient;
   idRFID: string;
 }) => {
-  if (!(await isSessionActive({ db }))) {
-    return "No hay sesion activa";
-  }
   const lastSession = await db.sesion.findFirst({
     orderBy: { sesionStart: "desc" },
     include: {
@@ -181,7 +179,7 @@ export const onRfidDetection = async ({
 }) => {
   const activeSession = await isSessionActive({ db });
 
-  // If a session is actie, only close it if the readed rfid is the same as the one that started the session
+  // If a session is active, only close it if the readed rfid is the same as the one that started the session
   if (activeSession) {
     const isRfid = await isRfidActive({
       idRFID,
@@ -189,7 +187,7 @@ export const onRfidDetection = async ({
     });
 
     // End session if the rfid is active
-    if (typeof isRfid === "boolean" && isRfid) {
+    if (isRfid) {
       const sessionId = await getActiveSessionId({ db });
       if (sessionId) {
         await endSessionById({ db, id_session: sessionId });
@@ -197,11 +195,16 @@ export const onRfidDetection = async ({
         await getSessionLight({ db, id_session: sessionId });
         return true;
       } else {
-        console.log("Error: session id not found");
-        return "No se encontró el id de la sesión.";
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "No se encontró el id de la sesión",
+        });
       }
     } else {
-      return "Ya hay una sesión activa.";
+      throw new TRPCError({
+        code: "CONFLICT",
+        message: "Ya hay una sesión activa.",
+      });
     }
   } else {
     // Start a new session if there is no active session
@@ -209,6 +212,9 @@ export const onRfidDetection = async ({
     // Restart the work time timer
     await startWorkTime({ db });
 
-    return "Hubo un error al iniciar la sesión.";
+    throw new TRPCError({
+      code: "INTERNAL_SERVER_ERROR",
+      message: "Ya hay una sesión activa.",
+    });
   }
 };

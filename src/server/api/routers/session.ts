@@ -25,13 +25,6 @@ export const sessionRouter = createTRPCRouter({
 
       if (result === true) {
         await openServo({ db: ctx.db });
-      } else {
-        // Save the log in the database.
-        await ctx.db.log.create({
-          data: {
-            message: result,
-          },
-        });
       }
     }),
 

@@ -45,7 +45,7 @@ export const LogTable = () => {
               <td className="px-6 py-4">{log.message}</td>
               <td className="px-6 py-4">{log.user?.name ?? "No user"}</td>
               <td className="px-6 py-4">
-                {log.createdAt.toLocaleTimeString()}
+              {log.createdAt.toLocaleTimeString()}, {log.createdAt.toLocaleDateString()}
               </td>
             </tr>
           ))}

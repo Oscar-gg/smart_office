@@ -21,7 +21,7 @@ export default function MessageDemo() {
   return (
     <Layout>
       <div className="flex w-full flex-col flex-wrap justify-center gap-y-4">
-        <div className="flex flex-row flex-wrap items-center justify-center gap-x-4 bg-blue-200 p-3 w-full gap-y-2">
+        <div className="flex w-full flex-row flex-wrap items-center justify-center gap-x-4 gap-y-2 bg-blue-200 p-3">
           <button
             className="rounded-md bg-slate-300 p-2"
             onClick={() => setPageView("Devices")}
@@ -52,14 +52,36 @@ export default function MessageDemo() {
           >
             Statistics
           </button>
+          {pageView === "Devices" && <RefetchDeviceButton />}
         </div>
-        <div className="w-full pr-2 pl-2">
+        <div className="w-full pl-2 pr-2">
           <PageSwitch page={pageView} />
         </div>
       </div>
     </Layout>
   );
 }
+
+const RefetchDeviceButton = () => {
+  const mutation = api.aws.refreshDevices.useMutation({
+    onSuccess: (data) => {
+      alert(data);
+    },
+    onError: (error) => {
+      alert(error.message);
+    },
+  });
+
+  return (
+    <button
+      className="rounded-md bg-red-500 p-2
+      hover:bg-red-600 text-white"
+      onClick={() => mutation.mutate()}
+    >
+      Refresh Devices
+    </button>
+  );
+};
 
 const PageSwitch = ({ page }: { page: string }) => {
   if (page === "Devices") {

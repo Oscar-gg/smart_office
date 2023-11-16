@@ -52,7 +52,7 @@ model User {
     email         String?      @unique
     role          String?
     id_RFID       String?      @unique
-    lastRequest   DateTime?    @default(now())
+    lastRequest   DateTime     @default(now())
     rfid          RFID?        @relation(fields: [id_RFID], references: [id_RFID])
     sesiones      Sesion[]
     emailVerified DateTime?

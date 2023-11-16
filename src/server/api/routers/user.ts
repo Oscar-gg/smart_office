@@ -21,6 +21,9 @@ export const userRouter = createTRPCRouter({
       select: {
         id: true,
       },
+      orderBy:{
+        lastRequest: "desc"
+      }
     });
   }),
 

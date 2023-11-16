@@ -18,11 +18,12 @@ export const DeviceCard = ({ id }: { id: string }) => {
     onSuccess: (data) => {
       alert(data);
     },
+    onError: (error) => {
+      alert(error.message);
+    }
   });
 
   const [data, setData] = useState<string>("");
-
-  const [modal, setModal] = useState<boolean>(false);
 
   const dialogRef = useRef<HTMLDialogElement>(null);
 

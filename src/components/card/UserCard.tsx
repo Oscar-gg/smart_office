@@ -1,5 +1,6 @@
 import { api } from "~/utils/api";
 import ValidImage from "../general/ValidImage";
+import { RiRadioButtonLine } from "react-icons/ri";
 
 export const UserCard = ({ id }: { id: string }) => {
   const { data: userData, isLoading } = api.user.getUserById.useQuery({ id });
@@ -16,9 +17,30 @@ export const UserCard = ({ id }: { id: string }) => {
       </div>
     );
   }
+
+  const now = new Date();
+
+  const timeDiffMillis = Math.abs(
+    now.getTime() - userData.lastRequest.getTime(),
+  );
+
+  const timeDiffMinutes = Math.round(timeDiffMillis / 60000);
+  console.log(timeDiffMinutes);
   return (
-    <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800 p-2">
-      <div className="flex justify-end px-4 pt-4"></div>
+    <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-white p-2 shadow dark:border-gray-700 dark:bg-gray-800">
+      <div className="flex items-center justify-start gap-x-3 px-4 pb-4 pt-4">
+        {timeDiffMinutes < 5 ? (
+          <>
+            <RiRadioButtonLine className="text-green-500" />
+            <p>Activo</p>
+          </>
+        ) : (
+          <>
+            <RiRadioButtonLine className="text-gray-500" />
+            <p>Última vez: {timeDiffMinutes} minutos</p>
+          </>
+        )}
+      </div>
       <div className="flex flex-col items-center pb-10">
         <ValidImage
           src={userData?.image ?? "-1"}
@@ -30,7 +52,7 @@ export const UserCard = ({ id }: { id: string }) => {
         <span className="text-sm text-gray-500 dark:text-gray-400">
           <b>Role:</b> {userData.role ?? "No Role"}
         </span>
-        <span className="text-md text-gray-600 dark:text-gray-400 mt-3">
+        <span className="text-md mt-3 text-gray-600 dark:text-gray-400">
           Preferencias:
         </span>
         <span className="text-sm text-gray-500 dark:text-gray-400">

@@ -112,6 +112,22 @@ const t = initTRPC
  */
 export const createTRPCRouter = t.router;
 
+// Middleware that updates the lastRequest field on the user
+const lastRequest = t.middleware(async ({ ctx, next, meta }) => {
+  if (ctx.session && ctx.session.user) {
+    await ctx.db.user.update({
+      where: {
+        id: ctx.session.user.id,
+      },
+      data: {
+        lastRequest: new Date(),
+      },
+    });
+  }
+
+  return next();
+});
+
 /**
  * Public (unauthenticated) procedure
  *
@@ -119,23 +135,26 @@ export const createTRPCRouter = t.router;
  * guarantee that a user querying is authorized, but you can still access user session data if they
  * are logged in.
  */
-export const publicProcedure = t.procedure;
+
+export const publicProcedure = t.procedure.use(lastRequest);
 
 /** Reusable middleware that enforces users are logged in before running the procedure. */
 const enforceUserIsAuthed = t.middleware(async ({ ctx, next, meta }) => {
-
   if (!ctx.session || !ctx.session.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
 
-  await ctx.db.user.update({
-    where: {
-      id: ctx.session.user.id,
-    },
-    data: {
-      lastLogin: new Date(),
-    },
-  });
+  // Avoid errors when using API caller with 
+  if (ctx.session.user.id != "-1") {
+    await ctx.db.user.update({
+      where: {
+        id: ctx.session.user.id,
+      },
+      data: {
+        lastRequest: new Date(),
+      },
+    });
+  }
 
   const role = ctx.session.user.role;
   if (meta?.role === "system" && role !== "system") {

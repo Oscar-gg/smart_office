@@ -1,4 +1,3 @@
-import { signIn, signOut, useSession } from "next-auth/react";
 import { Layout } from "~/components/layout/layout";
 
 export default function Home() {
