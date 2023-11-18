@@ -12,7 +12,7 @@ export default function Home() {
 <div className="container flex flex-col items-center justify-center mt-5 max-w-[100%]">
 		<div className="col-lg-8 col-lg-offset-2 col-md-8 col-md-offset-2 col-sm-12 col-xs-12 edit_information">
 			<form action=""  method="POST">	
-				<h1 className="text-center text-3xl font-fancy p-5">Editar Perfil</h1>
+				<h1 className="text-center text-3xl font-fancy p-5">Tú Perfil</h1>
 				<div className="row p-4">
 					<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 						<div className="form-group">
@@ -35,6 +35,16 @@ export default function Home() {
 							<label className="profile_details_text font-smart text-lg">RFID:</label>
 							<input type="tel" name="phone" className="form-control border-solid rounded shadow-lg p-3 m-3" value="" />
 							
+						</div>
+					</div>
+				</div>
+                <div className="row p-4">
+					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div className="form-group">
+							<label className="profile_details_text font-smart text-lg">Temperatura Minima Preferencial:</label>
+							<input type="number" name="mintemp" min="16" max="25" className="form-control border-solid rounded shadow-lg p-3 m-3" value="" />
+							<label className="profile_details_text font-smart text-lg">Temperatura Maxima Preferencial:</label>
+							<input type="number" name="maxtemp" min="16" max="27" className="form-control border-solid rounded shadow-lg p-3 m-3" value="" />
 						</div>
 					</div>
 				</div>
