@@ -17,6 +17,7 @@ export default function Home() {
 					<div className="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 						<div className="form-group">
 							<label className="profile_details_text font-smart text-lg">Nombre:</label>
+							<input type="text" name="first_name" className="form-control border-solid rounded shadow-lg p-3 m-3" value="" disabled/>
 							
 						</div>
 					</div>
@@ -25,6 +26,7 @@ export default function Home() {
 					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<div className="form-group">
 							<label className="profile_details_text font-smart text-lg">Correo:</label>
+							<input type="email" name="email" className="form-control border-solid rounded shadow-lg p-3 m-3" value="" disabled></input>
 							
 						</div>
 					</div>
@@ -42,9 +44,15 @@ export default function Home() {
 					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 						<div className="form-group">
 							<label className="profile_details_text font-smart text-lg">Temperatura Minima Preferencial:</label>
-							<input type="number" name="mintemp" min="16" max="25" className="form-control border-solid rounded shadow-lg p-3 m-3" value="" />
+							<input type="number" name="mintemp" min="16" max="25" className="form-control border-solid rounded shadow-lg p-3 m-3" value="" required/>
+						</div>
+					</div>
+				</div>
+				<div className="row p-4">
+					<div className="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+						<div className="form-group">
 							<label className="profile_details_text font-smart text-lg">Temperatura Maxima Preferencial:</label>
-							<input type="number" name="maxtemp" min="16" max="27" className="form-control border-solid rounded shadow-lg p-3 m-3" value="" />
+							<input type="number" name="maxtemp" min="16" max="27" className="form-control border-solid rounded shadow-lg p-3 m-3" value="" required/>
 						</div>
 					</div>
 				</div>
