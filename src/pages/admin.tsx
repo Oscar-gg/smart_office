@@ -75,7 +75,7 @@ const RefetchDeviceButton = () => {
   return (
     <button
       className="rounded-md bg-red-500 p-2
-      hover:bg-red-600 text-white"
+      text-white hover:bg-red-600"
       onClick={() => mutation.mutate()}
     >
       Refresh Devices
@@ -118,7 +118,8 @@ const Devices = () => {
 
 const Users = () => {
   const { data: userIds, isLoading } = api.user.getUserIds.useQuery();
-
+  const { data: activeId } = api.session.getActiveUserId.useQuery();
+  
   if (isLoading) {
     return <div>Loading...</div>;
   } else if (!userIds || userIds.length === 0) {
@@ -127,7 +128,13 @@ const Users = () => {
   return (
     <div className={cardWrappertw}>
       {userIds.map((userId) => (
-        <UserCard id={userId.id} key={userId.id} />
+        <UserCard
+          id={userId.id}
+          key={userId.id}
+          hasSessionActive={
+            userId.id == activeId
+          }
+        />
       ))}
     </div>
   );

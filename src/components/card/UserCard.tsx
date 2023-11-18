@@ -2,8 +2,15 @@ import { api } from "~/utils/api";
 import ValidImage from "../general/ValidImage";
 import { RiRadioButtonLine } from "react-icons/ri";
 
-export const UserCard = ({ id }: { id: string }) => {
+export const UserCard = ({
+  id,
+  hasSessionActive,
+}: {
+  id: string;
+  hasSessionActive?: boolean;
+}) => {
   const { data: userData, isLoading } = api.user.getUserById.useQuery({ id });
+
   if (isLoading) {
     return (
       <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-800">
@@ -32,13 +39,18 @@ export const UserCard = ({ id }: { id: string }) => {
         {timeDiffMinutes < 5 ? (
           <>
             <RiRadioButtonLine className="text-green-500" />
-            <p>Activo</p>
+            <p>En página web</p>
           </>
         ) : (
           <>
             <RiRadioButtonLine className="text-gray-500" />
             <p>Última vez: {timeDiffMinutes} minutos</p>
           </>
+        )}
+        {hasSessionActive && (
+          <p className="ml-auto p-2 bg-green-300 rounded-md">
+            En oficina
+          </p>
         )}
       </div>
       <div className="flex flex-col items-center pb-10">

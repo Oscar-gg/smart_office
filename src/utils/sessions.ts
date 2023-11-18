@@ -52,6 +52,21 @@ export const getActiveSessionId = async ({ db }: { db: PrismaClient }) => {
   return null;
 };
 
+export const getActiveUserId = async ({ db }: { db: PrismaClient }) => {
+  const lastSession = await db.sesion.findFirst({
+    orderBy: { sesionStart: "desc" },
+    select: {
+      id_user: true,
+      sesionEnd: true,
+    }
+  });
+
+  if (lastSession && lastSession?.sesionEnd == null)
+    return lastSession.id_user;
+
+  return null;
+};
+
 export const endSession = async ({
   db,
   id_user,
@@ -146,6 +161,31 @@ export const setSessionWorkTime = async ({
   return true;
 };
 
+export const getUserRFID = async ({
+  db,
+  idRFID,
+}: {
+  db: PrismaClient;
+  idRFID: string;
+}) => {
+  const userId = await db.user.findFirst({
+    where: {
+      rfid: {
+        id_RFID: idRFID,
+      },
+    },
+    select: {
+      id: true,
+    },
+  });
+
+  if (userId?.id) {
+    return userId.id;
+  }
+
+  return false;
+};
+
 export const isRfidActive = async ({
   db,
   idRFID,
@@ -171,11 +211,9 @@ export const isRfidActive = async ({
 export const onRfidDetection = async ({
   db,
   idRFID,
-  userId,
 }: {
   db: PrismaClient;
   idRFID: string;
-  userId: string;
 }) => {
   const activeSession = await isSessionActive({ db });
 
@@ -207,6 +245,13 @@ export const onRfidDetection = async ({
       });
     }
   } else {
+    const userId = await getUserRFID({ db, idRFID });
+    if (!userId) {
+      throw new TRPCError({
+        code: "BAD_REQUEST",
+        message: "No hay usuario con el RFID leído.",
+      });
+    }
     // Start a new session if there is no active session
     if (await startSession({ db, id_user: userId })) return true;
     // Restart the work time timer

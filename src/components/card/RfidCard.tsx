@@ -22,10 +22,9 @@ export const RfidCard = ({ id }: { id: string }) => {
     }
   };
 
-  console.log(rfidUsers);
   const options = rfidUsers?.map((rfidUser) => ({
     value: rfidUser.id,
-    label: rfidUser.name,
+    label: rfidUser.email,
   }));
 
   const mutation = api.rfid.updateRFIDOwner.useMutation({
