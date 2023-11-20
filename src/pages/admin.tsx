@@ -84,8 +84,22 @@ const RefetchDeviceButton = () => {
 };
 
 const PageSwitch = ({ page }: { page: string }) => {
+  const mutation = api.device.generateData.useMutation({
+    onSuccess: (data) => {
+      alert(data);
+    },
+    onError: (error) => {
+      alert(error.message);
+    },
+  });
+
   if (page === "Devices") {
-    return <Devices />;
+    return (
+      <>
+        <Devices />
+        <button className="p-1 bg-green-400 rounded-md m-2" onClick={() => mutation.mutate()}>Generate Data</button>
+      </>
+    );
   } else if (page === "Users") {
     return <Users />;
   } else if (page === "RFID") {
@@ -119,7 +133,7 @@ const Devices = () => {
 const Users = () => {
   const { data: userIds, isLoading } = api.user.getUserIds.useQuery();
   const { data: activeId } = api.session.getActiveUserId.useQuery();
-  
+
   if (isLoading) {
     return <div>Loading...</div>;
   } else if (!userIds || userIds.length === 0) {
@@ -131,9 +145,7 @@ const Users = () => {
         <UserCard
           id={userId.id}
           key={userId.id}
-          hasSessionActive={
-            userId.id == activeId
-          }
+          hasSessionActive={userId.id == activeId}
         />
       ))}
     </div>

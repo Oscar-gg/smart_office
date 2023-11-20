@@ -5,7 +5,10 @@ import {
   createTRPCRouter,
   protectedProcedure,
   publicProcedure,
+  adminProcedure,
 } from "~/server/api/trpc";
+
+import { generateData } from "~/utils/faker";
 
 export const deviceRouter = createTRPCRouter({
   addDevice: systemProcedure
@@ -106,5 +109,10 @@ export const deviceRouter = createTRPCRouter({
         connectionId: true,
       },
     });
+  }),
+
+  generateData: adminProcedure.mutation(async ({ ctx }) => {
+    await generateData({ sessionCount: 5, db: ctx.db });
+    return "Data has been generated.";
   }),
 });
