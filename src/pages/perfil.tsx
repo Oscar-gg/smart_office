@@ -3,6 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { Layout } from "~/components/layout/layout";
 
+
 export default function Home() {
   return (
     <Layout mainClassName="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#ffffff] to-[#ffffff]">
@@ -89,6 +90,9 @@ export default function Home() {
 	</div>
 
     
+<div className="container flex flex-col items-center justify-center mt-5 max-w-[100%]">
+<h1 className="text-center text-3xl font-fancy p-5">Oficina</h1>
+</div>
 
 
 
