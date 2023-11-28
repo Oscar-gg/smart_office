@@ -56,6 +56,15 @@ export default function Home() {
             </div>
           </Link>
         </div>
+
+            <h1 className="font-smart text-4xl"> Ubicacion </h1>
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8 items-center justify-center">
+            <img className=""
+            src="https://images.adsttc.com/media/images/5527/0ecb/e58e/cecd/8200/018a/newsletter/portada_3E7E0815.jpg?1428623043"
+            alt=""
+          />
+            <iframe className="sm:w-800 sm:h-650 w-[100%] h-[100%]" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3598.750981344727!2d-100.25250232396829!3d25.579950277466466!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8662c751f458e7fd%3A0xd3518cea83c18fd6!2sWorkaccess!5e0!3m2!1sen!2smx!4v1699574138045!5m2!1sen!2smx" loading="lazy"></iframe>
+            </div>
       </div>
     </Layout>
   );
