@@ -17,7 +17,7 @@ export const Layout = ({
     { name: "Home", path: "/" },
     { name: "Services", path: "/services" },
     { name: "Perfil", path: "/perfil", visibility: "authenticated"},
-    { name: "Admin", path: "/admin2", visibility: "admin" },
+    { name: "Admin", path: "/admin", visibility: "admin" },
     { name: "About", path: "/about" },
   ];
 
