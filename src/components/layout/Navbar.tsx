@@ -85,7 +85,7 @@ export const NavBar = ({
             <div className="flex flex-shrink-0 items-center">
               <img
                 className="h-8 w-auto"
-                src="favicon.png"
+                src="/favicon.png"
                 alt="Smart Office"
               />
             </div>
@@ -132,14 +132,14 @@ export const NavBar = ({
                     href="/user"
                     className="block px-4 py-2 text-sm text-gray-700"
                   >
-                    Your Profile
+                    Tu perfil
                   </Link>
                   <Link
                     href="#"
                     className="block px-4 py-2 text-sm text-gray-700"
                     onClick={() => void signOut()}
                   >
-                    Sign out
+                    Cerrar sesión
                   </Link>
                 </div>
               </div>
@@ -148,7 +148,7 @@ export const NavBar = ({
                 onClick={() => void signIn()}
                 className="rounded-md bg-gray-700 px-3 py-2 text-sm font-medium text-gray-300 duration-100 hover:bg-slate-600 hover:text-white"
               >
-                Sign in
+                Iniciar sesión
               </button>
             )}
           </div>

@@ -16,9 +16,9 @@ export const Layout = ({
   const routes = [
     { name: "Home", path: "/" },
     { name: "Services", path: "/services" },
+    { name: "Perfil", path: "/perfil", visibility: "authenticated"},
+    { name: "Admin", path: "/admin2", visibility: "admin" },
     { name: "About", path: "/about" },
-    { name: "Perfil", path: "/perfil" },
-    { name: "Admin", path: "/admin", visibility: "admin" },
   ];
 
   return (

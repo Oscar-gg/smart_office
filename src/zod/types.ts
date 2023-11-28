@@ -22,3 +22,11 @@ export const CommandObject = z.object({
   id: z.string().optional(),
   open: z.number().optional(),
 });
+
+export const UserProfileModel = z.object({
+  id: z.string(),
+  gender: z.string(),
+  birthdate: z.date(),
+  minimumTemperature: z.number(),
+  maximumTemperature: z.number(),
+});

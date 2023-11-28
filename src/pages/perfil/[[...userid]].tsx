@@ -7,6 +7,11 @@ import Link from "next/link";
 
 import { Layout } from "~/components/layout/layout";
 import { GOOGLE_FONT_PROVIDER } from "next/dist/shared/lib/constants";
+import { Session } from "next-auth";
+import { compareRole } from "~/utils/role";
+import { useRouter } from "next/router";
+import { Loading } from "~/components/general/Loading";
+import { UserProfile } from "~/components/user/UserProfile";
 
 function getRandomNumber() {
   return Math.random() * 100;
@@ -32,17 +37,86 @@ const options = {
 };
 
 export const data2 = [
-	["Task", "Horas"],
-	["Luz Prendida", 11],
-	["Luz Apagada", 2],
-	
-  ];
-  
+  ["Task", "Horas"],
+  ["Luz Prendida", 11],
+  ["Luz Apagada", 2],
+];
 
+const PageContent = ({
+  session,
+  id,
+  status,
+}: {
+  session: Session | undefined | null;
+  id: string;
+  status: string;
+}) => {
+  if (status === "loading") {
+    return <Loading pageName="Página de usuario" />;
+  }
 
+  if (!session && id === "") {
+    return (
+      <>
+        <h1>No has iniciado sesión</h1>
+        <div className="text-2xl">
+          <p>Inicia sesión para ver tu perfil.</p>
+        </div>
+      </>
+    );
+  } else if (!session && id !== "") {
+    return (
+      <>
+        <h1>No has iniciado sesión</h1>
+        <div className="text-2xl">
+          <p>Inicia sesión para ver la información del perfil.</p>
+        </div>
+      </>
+    );
+  } else if (session && id === session.user.id) {
+    return (
+      <>
+        <h1 className="p-5 text-center font-fancy text-3xl">Tu Perfil</h1>
+        <UserProfile userId={id} />
+      </>
+    );
+  } else if (session && id !== session.user.id) {
+    if (compareRole({ requiredRole: "admin", userRole: session.user.role })) {
+      return (
+        <>
+          <h1 className="p-5 text-center font-fancy text-3xl">
+            Información del perfil
+          </h1>
+          <UserProfile userId={id} />
+        </>
+      );
+    } else
+      return (
+        <>
+          <h1>No tienes acceso a la información de este perfil</h1>
+          <div className="text-2xl">
+            Inicia sesión con una cuenta de administrador para ver la
+            información.
+          </div>
+        </>
+      );
+  }
+};
 
-export default function Home() {
+export default function Profile() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [data, setData] = useState(getData);
+
+  const userId = router.query?.userId
+    ? router.query?.userId[0] ?? ""
+    : session?.user.id ?? "";
+
+  return (
+    <Layout>
+      <PageContent session={session} id={userId} status={status} />
+    </Layout>
+  );
 
   return (
     <Layout mainClassName="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#ffffff] to-[#ffffff]">
@@ -216,28 +290,29 @@ export default function Home() {
             width="75%"
             height="400px"
           />
-		 <h1 className="p-5 text-center font-fancy text-xl">Temperatura en la Oficina</h1>
+          <h1 className="p-5 text-center font-fancy text-xl">
+            Temperatura en la Oficina
+          </h1>
           <div className="flex items-center justify-center p-2">
             {" "}
             {/* Wrap the chart in a flex container */}
             <Chart
               chartType="Gauge"
-				width="50%"
+              width="50%"
               height="100%"
               data={data}
               options={options}
             />
           </div>
-		  <h1 className="p-5 text-center font-fancy text-xl">Horas de Luz</h1>
-		  <div className="flex items-center justify-center p-3">
-		
-		  <Chart
-				chartType="PieChart"
-				data={data2}
-				width={"100%"}
-				height={"400px"}
-			/>
-		  </div>
+          <h1 className="p-5 text-center font-fancy text-xl">Horas de Luz</h1>
+          <div className="flex items-center justify-center p-3">
+            <Chart
+              chartType="PieChart"
+              data={data2}
+              width={"100%"}
+              height={"400px"}
+            />
+          </div>
         </div>
       </div>
     </Layout>
