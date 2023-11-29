@@ -5,6 +5,7 @@ import { api } from "~/utils/api";
 import { DeviceCard } from "~/components/card/DeviceCard";
 import { RfidCard } from "~/components/card/RfidCard";
 import { LogTable } from "~/components/general/LogTable";
+import { AdminStatistics } from "~/components/admin/adminStatistics";
 
 // The following messages are supported:
 // {"action": "servo", "open": "1"}
@@ -97,7 +98,12 @@ const PageSwitch = ({ page }: { page: string }) => {
     return (
       <>
         <Devices />
-        <button className="p-1 bg-green-400 rounded-md m-2" onClick={() => mutation.mutate()}>Generate Data</button>
+        <button
+          className="m-2 rounded-md bg-green-400 p-1"
+          onClick={() => mutation.mutate()}
+        >
+          Generate Data
+        </button>
       </>
     );
   } else if (page === "Users") {
@@ -107,7 +113,7 @@ const PageSwitch = ({ page }: { page: string }) => {
   } else if (page === "Logs") {
     return <LogTable />;
   } else if (page === "Statistics") {
-    return <p>Pending implementation</p>;
+    return <AdminStatistics/>;
   } else {
     return <div>Invalid page: {page}</div>;
   }

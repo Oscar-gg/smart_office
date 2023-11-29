@@ -150,7 +150,7 @@ export const NavBar = ({
             ) : (
               <button
                 onClick={() => void signIn()}
-                className="rounded-md bg-gray-700 px-3 py-2 text-sm font-medium text-gray-300 duration-100 hover:bg-slate-600 hover:text-white"
+                className="rounded-md bg-gray-700 ml-2 px-3 py-2 text-sm font-medium text-gray-300 duration-100 hover:bg-slate-600 hover:text-white"
               >
                 Iniciar sesión
               </button>
