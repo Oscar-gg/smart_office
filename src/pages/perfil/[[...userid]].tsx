@@ -73,11 +73,11 @@ const PageContent = ({
         </div>
       </>
     );
-  } else if (session && id === session.user.id) {
+  } else if (session && (id === session.user.id || id === "")) {
     return (
       <>
         <h1 className="p-5 text-center font-fancy text-3xl">Tu Perfil</h1>
-        <UserProfile userId={id} />
+        <UserProfile userId={session?.user?.id ?? ""} />
       </>
     );
   } else if (session && id !== session.user.id) {
@@ -108,9 +108,7 @@ export default function Profile() {
   const router = useRouter();
   const [data, setData] = useState(getData);
 
-  const userId = router.query?.userId
-    ? router.query?.userId[0] ?? ""
-    : session?.user.id ?? "";
+  const userId = router.query?.userid?.[0] ? router.query?.userid[0] : "";
 
   return (
     <Layout>
@@ -316,23 +314,5 @@ export default function Profile() {
         </div>
       </div>
     </Layout>
-  );
-}
-
-function AuthShowcase() {
-  const { data: sessionData } = useSession();
-
-  return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      <p className="text-center text-2xl text-white">
-        {sessionData && <span>Logged in as {sessionData.user?.name}</span>}
-      </p>
-      <button
-        className="rounded-full bg-white/10 px-10 py-3 font-semibold text-white no-underline transition hover:bg-white/20"
-        onClick={sessionData ? () => void signOut() : () => void signIn()}
-      >
-        {sessionData ? "Sign out" : "Sign in"}
-      </button>
-    </div>
   );
 }

@@ -13,6 +13,7 @@ export const userSchema = Yup.object().shape({
       (value, context) => {
         const bd = new Date(value);
         const today = new Date();
+        today.setHours(0, 0, 0, 0);
         return bd.getTime() < today.getTime();
       },
     ),

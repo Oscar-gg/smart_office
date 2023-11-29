@@ -32,7 +32,7 @@ export const UserCard = ({
   );
 
   const timeDiffMinutes = Math.round(timeDiffMillis / 60000);
-  console.log(timeDiffMinutes);
+  // console.log(timeDiffMinutes);
   return (
     <div className="w-full max-w-sm rounded-lg border border-gray-200 bg-white p-2 shadow dark:border-gray-700 dark:bg-gray-800">
       <div className="flex items-center justify-start gap-x-3 px-4 pb-4 pt-4">
@@ -48,9 +48,7 @@ export const UserCard = ({
           </>
         )}
         {hasSessionActive && (
-          <p className="ml-auto p-2 bg-green-300 rounded-md">
-            En oficina
-          </p>
+          <p className="ml-auto rounded-md bg-green-300 p-2">En oficina</p>
         )}
       </div>
       <div className="flex flex-col items-center pb-10">
@@ -77,7 +75,7 @@ export const UserCard = ({
         </span>
         <div className="mt-4 flex md:mt-6">
           <a
-            href="#"
+            href={`/perfil/${id}`}
             className="inline-flex items-center rounded-lg bg-blue-700 px-4 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
           >
             See User details

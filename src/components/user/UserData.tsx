@@ -21,6 +21,7 @@ export const UserData = ({
   defaultValues?: RouterOutputs["user"]["getUserProfileById"];
 }) => {
   const context = api.useContext();
+  const session = useSession();
 
   const mutation = api.user.modifyUserProfile.useMutation({
     onSuccess: (result) => {
@@ -66,7 +67,9 @@ export const UserData = ({
                     <input
                       type="text"
                       name="first_name"
-                      onChange={(e: ChangeEvent<HTMLInputElement>) => {console.log(e)}}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                        console.log(e);
+                      }}
                       className="form-control m-3 rounded border-solid p-3 shadow-lg"
                       value={defaultValues?.name ?? "Sin nombre asociado"}
                       disabled
@@ -83,7 +86,9 @@ export const UserData = ({
                     <input
                       type="email"
                       name="email"
-                      onChange={(e: ChangeEvent<HTMLInputElement>) => {console.log(e)}}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                        console.log(e);
+                      }}
                       className="form-control m-3 rounded border-solid p-3 shadow-lg"
                       value={defaultValues?.email ?? "Sin correo asociado"}
                       disabled
@@ -118,6 +123,7 @@ export const UserData = ({
                     <input
                       type="number"
                       className="form-control m-3 rounded border-solid p-3 shadow-lg"
+                      disabled={session.data?.user.id !== defaultValues?.id}
                       {...getFieldProps("minimumTemperature")}
                     />
                     <div className="my-4">
@@ -140,6 +146,7 @@ export const UserData = ({
                       type="number"
                       {...getFieldProps("maximumTemperature")}
                       className="form-control m-3 rounded border-solid p-3 shadow-lg"
+                      disabled={session.data?.user.id !== defaultValues?.id}
                     />
                     <div className="my-4">
                       <ErrorMessage
@@ -161,6 +168,7 @@ export const UserData = ({
                       type="date"
                       {...getFieldProps("birthdate")}
                       className="form-control m-3 p-3 shadow-lg"
+                      disabled={session.data?.user.id !== defaultValues?.id}
                     />
                     <div className="my-4">
                       <ErrorMessage
@@ -184,7 +192,9 @@ export const UserData = ({
                       onChange={async (e: ChangeEvent<HTMLSelectElement>) => {
                         await setFieldValue("gender", e.target.value, true);
                       }}
+                      disabled={session.data?.user.id !== defaultValues?.id}
                     >
+                      <option value="">Selecciona una opción</option>
                       <option value="Mujer">Mujer</option>
                       <option value="Hombre">Hombre</option>
                       <option value="Otro">Otro</option>
@@ -202,12 +212,14 @@ export const UserData = ({
 
               <div className="row p-4">
                 <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 submit">
-                  <button
-                    type="submit"
-                    className="btn btn-success m-3 rounded-lg border-2 bg-blue-400 p-5 font-smart text-lg shadow-lg"
-                  >
-                    Guardar cambios
-                  </button>
+                  {session?.data?.user.id === defaultValues?.id && (
+                    <button
+                      type="submit"
+                      className="btn btn-success m-3 rounded-lg border-2 bg-blue-400 p-5 font-smart text-lg shadow-lg"
+                    >
+                      Guardar cambios
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
