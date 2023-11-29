@@ -3,6 +3,8 @@ import { compareRole } from "~/utils/role";
 import { signOut, signIn, useSession } from "next-auth/react";
 import { useState } from "react";
 import Link from "next/link";
+import { IoMdRefresh } from "react-icons/io";
+import { api } from "~/utils/api";
 
 export const NavBar = ({
   routes,
@@ -15,6 +17,7 @@ export const NavBar = ({
   }[];
 }) => {
   const { data: sessionData } = useSession();
+  const context = api.useContext();
 
   const [closed, setClosed] = useState(true); // State of mobile menu
 
@@ -106,6 +109,7 @@ export const NavBar = ({
             </div>
           </div>
           <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            <IoMdRefresh onClick={() =>  context.invalidate()} className="rounded-full bg-green-400 p-1" size={30} />
             {sessionData ? (
               <div className="group/profile relative ml-3">
                 <div>
@@ -129,7 +133,7 @@ export const NavBar = ({
                 <div className="absolute right-0 z-10 mt-2 w-48 origin-top-right scale-0 rounded-md bg-white py-1 opacity-0 shadow-lg ring-1 ring-black ring-opacity-5 duration-200 focus:outline-none group-focus-within/profile:scale-100 group-focus-within/profile:opacity-100">
                   {/* <!-- Active: "bg-gray-100", Not Active: "" --> */}
                   <Link
-                    href="/user"
+                    href="/perfil"
                     className="block px-4 py-2 text-sm text-gray-700"
                   >
                     Tu perfil
