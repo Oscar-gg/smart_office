@@ -225,10 +225,7 @@ export const chartRouter = createTRPCRouter({
       >();
 
       for (const session of sessions) {
-        if (
-          !session?.LightConsumption?.sesion?.user.name
-        )
-          continue;
+        if (!session?.LightConsumption?.sesion?.user.name) continue;
 
         if (
           !userLightOnOff.has(
@@ -324,7 +321,7 @@ export const chartRouter = createTRPCRouter({
       const date = input.now ? new Date(input.now) : new Date();
 
       date.setDate(date.getDate() - 1);
-      
+
       const temperatures = await ctx.db.temperature.findMany({
         where: {
           createdAt: {
@@ -341,11 +338,11 @@ export const chartRouter = createTRPCRouter({
     }),
 
   getLimits: protectedProcedure
-    .input(z.object({ id: z.string() }))
+    .input(z.object({ id: z.string().optional() }))
     .query(async ({ ctx, input }) => {
       const limits = await ctx.db.user.findUnique({
         where: {
-          id: input.id,
+          id: input.id ?? ctx.session.user.id,
         },
         include: {
           Preferences: {

@@ -30,7 +30,7 @@ export const data4 = [
   [20, 16, 25, 21],
 ];
 
-export const Temperatures = ({ userId }: { userId: string }) => {
+export const Temperatures = ({ userId }: { userId?: string }) => {
   const [time, setTime] = useState(getToday());
 
   const [useDate, setUseDate] = useState(false);

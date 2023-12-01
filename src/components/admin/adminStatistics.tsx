@@ -12,6 +12,7 @@ import { LightOn } from "../chart/LightOn";
 import { WorkTime } from "../chart/WorkTime";
 import { LightOnUser } from "../chart/LightOnUser";
 import { Movement } from "../chart/Movement";
+import { Temperatures } from "../chart/Temperatures";
 
 ///GAUGE DE TEMPERATURA
 function getRandomNumber() {
@@ -116,6 +117,7 @@ export const AdminStatistics = () => {
 
         <LightOnUser />
         <Movement />
+        <Temperatures/>
       </div>
     </div>
   );
