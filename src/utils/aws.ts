@@ -61,6 +61,32 @@ export const openServo = async ({ db }: { db: PrismaClient }) => {
   }
 };
 
+export const setUserPreferences = async ({
+  db,
+  id_user,
+}: {
+  db: PrismaClient;
+  id_user: string;
+}) => {
+  const device = await getTemperatureDevice({ db });
+  const preferences = await db.preferences.findUnique({
+    where: {
+      id_user,
+    },
+  });
+
+  if (device && preferences) {
+    await sendCommand({
+      device,
+      data: {
+        action: "setPreferences",
+        lowerBound: preferences.temp_val_min,
+        upperBound: preferences.temp_val_max,
+      },
+    });
+  }
+};
+
 const sendCommand = async ({
   device,
   data,
@@ -83,7 +109,7 @@ const sendCommand = async ({
 
   try {
     const result = await client.send(command);
-    console.log("Result: ", result);
+    // console.log("Result: ", result);w
     return true;
   } catch (error) {
     console.log("error: ", error);
@@ -102,6 +128,19 @@ const getWorkTimeDevice = async ({ db }: { db: PrismaClient }) => {
     console.log("Error: ultrasonic device not found");
   }
 
+  return device;
+};
+
+const getTemperatureDevice = async ({ db }: { db: PrismaClient }) => {
+  const device = await db.device.findFirst({
+    where: {
+      type: "temperature",
+    },
+  });
+
+  if (!device) {
+    console.log("Error: temperature device not found");
+  }
   return device;
 };
 
@@ -138,9 +177,8 @@ export const removeInactiveConnections = async ({
 }: {
   db: PrismaClient;
 }) => {
-  
   const devices = await db.device.findMany();
-  
+
   for (const device of devices) {
     const isActive = await checkConnection({ device });
     if (!isActive) {
@@ -168,7 +206,7 @@ const checkConnection = async ({ device }: { device: Device }) => {
 
   try {
     const response = await client.send(command);
-    console.log("Result: ", response);
+    // console.log("Result: ", response);
 
     if (response.LastActiveAt) {
       const now = new Date();

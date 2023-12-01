@@ -3,6 +3,7 @@ import { Chart } from "react-google-charts";
 import { Temperature } from "~/components/chart/Temperature";
 import { WorkTime } from "~/components/chart/WorkTime";
 import { LightOn } from "~/components/chart/LightOn";
+import { Temperatures } from "../chart/Temperatures";
 
 export const UserStatistics = ({ userId }: { userId: string }) => {
   return (
@@ -20,6 +21,7 @@ export const UserStatistics = ({ userId }: { userId: string }) => {
           <WorkTime userId={userId} manyUsers={false} />
           <Temperature />
           <LightOn userId={userId} />
+          <Temperatures userId={userId} />
         </div>
       </div>
     </>

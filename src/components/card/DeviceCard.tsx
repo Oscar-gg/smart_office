@@ -112,9 +112,9 @@ const IconSwitch = ({ type }: { type: string | null | undefined }) => {
     return <FaTemperatureHigh className={icontw} />;
   } else if (type === "light") {
     return <BsLightbulbFill className={icontw} />;
-  } else if (type === "movement") {
+  } else if (type === "Alarm") {
     return <RiAlarmWarningFill className={icontw} />;
-  } else if (type === "workTime") {
+  } else if (type === "ultrasonic") {
     return <LuAlarmClock className={icontw} />;
   } else {
     return <BiErrorAlt className={icontw} />;

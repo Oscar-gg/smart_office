@@ -17,10 +17,12 @@ export const DeviceDataType = z.enum([
 ]);
 
 export const CommandObject = z.object({
-  action: z.enum(["startWorkTime", "endWorkTime", "getSessionLight", "servo"]),
+  action: z.enum(["startWorkTime", "endWorkTime", "getSessionLight", "servo", "setPreferences"]),
   data: z.string().optional(),
   id: z.string().optional(),
   open: z.number().optional(),
+  lowerBound: z.number().optional(),
+  upperBound: z.number().optional(),
 });
 
 export const UserProfileModel = z.object({

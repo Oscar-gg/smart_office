@@ -83,8 +83,6 @@ export const chartRouter = createTRPCRouter({
         byMonth: input.monthly,
       });
 
-      // console.log(accumulateData);
-      // console.log(result);
       if (result) return result;
       return null;
     }),
@@ -178,5 +176,193 @@ export const chartRouter = createTRPCRouter({
       }
 
       return { lightOn, lightOff };
+    }),
+
+  getLightOnOffByUser: protectedProcedure
+    .input(
+      z.object({
+        now: z.date().optional(),
+        byMonth: z.boolean().optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const date = input.now ?? new Date();
+
+      if (input.byMonth) {
+        date.setMonth(date.getMonth() - 1);
+      } else {
+        date.setDate(date.getDate() - 7);
+      }
+
+      const sessions = await ctx.db.sesion.findMany({
+        where: {
+          sesionStart: {
+            gte: date,
+          },
+        },
+
+        select: {
+          LightConsumption: {
+            select: {
+              lightAfter: true,
+              sesion: {
+                select: {
+                  user: {
+                    select: {
+                      name: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      });
+
+      const userLightOnOff = new Map<
+        string,
+        { lightOn: number; lightOff: number }
+      >();
+
+      for (const session of sessions) {
+        if (
+          !session?.LightConsumption?.sesion?.user.name
+        )
+          continue;
+
+        if (
+          !userLightOnOff.has(
+            session?.LightConsumption?.sesion?.user.name ?? "Sin nombre",
+          )
+        ) {
+          userLightOnOff.set(
+            session?.LightConsumption?.sesion?.user.name ?? "Sin nombre",
+            { lightOn: 0, lightOff: 0 },
+          );
+        }
+
+        const prendidoPrev =
+          userLightOnOff.get(session?.LightConsumption?.sesion?.user.name ?? "")
+            ?.lightOn ?? 0;
+        const apagadoPrev =
+          userLightOnOff.get(session?.LightConsumption?.sesion?.user.name ?? "")
+            ?.lightOff ?? 0;
+
+        if (session.LightConsumption.lightAfter === "Encendido") {
+          userLightOnOff.set(session?.LightConsumption?.sesion?.user.name, {
+            lightOn: prendidoPrev + 1,
+            lightOff: apagadoPrev,
+          });
+        } else if (session.LightConsumption.lightAfter === "Apagado") {
+          userLightOnOff.set(session?.LightConsumption?.sesion?.user.name, {
+            lightOn: prendidoPrev,
+            lightOff: apagadoPrev + 1,
+          });
+        }
+      }
+
+      const graphOn: [string, number][] = Array.from(
+        userLightOnOff,
+        ([key, value]) => [key, value.lightOn],
+      );
+      const graphOff: [string, number][] = Array.from(
+        userLightOnOff,
+        ([key, value]) => [key, value.lightOff],
+      );
+
+      return { graphOn, graphOff };
+    }),
+
+  getAlarmCount: protectedProcedure
+    .input(
+      z.object({
+        now: z.date().optional(),
+        byMonth: z.boolean().optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const date = input.now ?? new Date();
+
+      if (input.byMonth) {
+        date.setMonth(date.getMonth() - 1);
+      } else {
+        date.setDate(date.getDate() - 7);
+      }
+
+      const sessions = await ctx.db.movement.findMany({
+        where: {
+          triggerTime: {
+            gte: date,
+          },
+        },
+        select: {
+          duringSession: true,
+        },
+      });
+
+      let alarmInSession = 0;
+      let alarmOutOfSession = 0;
+
+      for (const session of sessions) {
+        if (session.duringSession) {
+          alarmInSession++;
+        } else {
+          alarmOutOfSession++;
+        }
+      }
+
+      return { alarmInSession, alarmOutOfSession };
+    }),
+
+  getTemperatures: protectedProcedure
+    .input(
+      z.object({
+        now: z.date().optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const date = input.now ? new Date(input.now) : new Date();
+
+      date.setDate(date.getDate() - 1);
+
+      console.log("Srv: ", input.now);
+      console.log("Srv: ", date);
+
+      const temperatures = await ctx.db.temperature.findMany({
+        where: {
+          createdAt: {
+            lte: input.now,
+            gte: date,
+          },
+        },
+      });
+
+      return temperatures.map((item) => ({
+        date: item.createdAt,
+        temp: item.temp_registered,
+      }));
+    }),
+
+  getLimits: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const limits = await ctx.db.user.findUnique({
+        where: {
+          id: input.id,
+        },
+        include: {
+          Preferences: {
+            select: {
+              temp_val_min: true,
+              temp_val_max: true,
+            },
+          },
+        },
+      });
+
+      return {
+        min: limits?.Preferences?.temp_val_min ?? 15,
+        max: limits?.Preferences?.temp_val_max ?? 25,
+      };
     }),
 });

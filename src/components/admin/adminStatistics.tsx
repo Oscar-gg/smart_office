@@ -10,6 +10,8 @@ import { GOOGLE_FONT_PROVIDER } from "next/dist/shared/lib/constants";
 import { Temperature } from "~/components/chart/Temperature";
 import { LightOn } from "../chart/LightOn";
 import { WorkTime } from "../chart/WorkTime";
+import { LightOnUser } from "../chart/LightOnUser";
+import { Movement } from "../chart/Movement";
 
 ///GAUGE DE TEMPERATURA
 function getRandomNumber() {
@@ -99,7 +101,6 @@ export const data4 = [
 ];
 
 export const AdminStatistics = () => {
-
   return (
     <div className="container mt-5 flex max-w-[100%] flex-col items-center justify-center">
       <h1 className="p-5 text-center font-fancy text-3xl">Overview</h1>
@@ -109,23 +110,12 @@ export const AdminStatistics = () => {
         </h1>
         <WorkTime manyUsers={true} userId="-1" />
 
-        {/* <h1 className="p-5 text-center font-fancy text-xl">
-          Usuarios Frequentes
-        </h1>
-        <div className="m-0 flex items-center justify-center p-2">
-          <Chart
-            chartType="Table"
-            width="fit-content"
-            height="30%x"
-            data={data3}
-            options={options3}
-            formatters={formatters}
-          />
-        </div> */}
-
         <Temperature />
 
         <LightOn userId={"-1"} allUsers={true} />
+
+        <LightOnUser />
+        <Movement />
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import type { PrismaClient } from "@prisma/client";
 import { TRPCError } from "@trpc/server";
 
-import { endWorkTime, getSessionLight, startWorkTime } from "~/utils/aws";
+import { endWorkTime, getSessionLight, setUserPreferences, startWorkTime } from "~/utils/aws";
 
 // Utility functions to interact with sessions
 
@@ -10,6 +10,8 @@ export const isSessionActive = async ({ db }: { db: PrismaClient }) => {
     orderBy: { sesionStart: "desc" },
   });
 
+  console.log(lastSession);
+  
   if (lastSession == null) return false;
 
   if (lastSession.sesionEnd == null) return true;
@@ -58,11 +60,10 @@ export const getActiveUserId = async ({ db }: { db: PrismaClient }) => {
     select: {
       id_user: true,
       sesionEnd: true,
-    }
+    },
   });
 
-  if (lastSession && lastSession?.sesionEnd == null)
-    return lastSession.id_user;
+  if (lastSession && lastSession?.sesionEnd == null) return lastSession.id_user;
 
   return null;
 };
@@ -253,9 +254,12 @@ export const onRfidDetection = async ({
       });
     }
     // Start a new session if there is no active session
-    if (await startSession({ db, id_user: userId })) return true;
-    // Restart the work time timer
-    await startWorkTime({ db });
+    if (await startSession({ db, id_user: userId })) {
+      // Restart the work time timer
+      await startWorkTime({ db });
+      await setUserPreferences({ db, id_user: userId });
+      return true;
+    }
 
     throw new TRPCError({
       code: "INTERNAL_SERVER_ERROR",

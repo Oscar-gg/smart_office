@@ -34,6 +34,7 @@ export const computeDate = (dateWithoutHour: string) => {
 
 export const getToday = () => {
   const today = new Date();
+  today.setDate(today.getDate() + 1);
   today.setHours(0, 0, 0, 0);
   return today;
 };
@@ -84,7 +85,7 @@ export const getStartAndEnd = ({
 }) => {
   if (monthly) {
     const start = new Date(time.getFullYear(), time.getMonth(), 1);
-    const end = new Date(time.getFullYear(), time.getMonth() + 1, 0);
+    const end = new Date(time.getFullYear(), time.getMonth() + 1, 1);
     return { start, end };
   } else {
     const start = new Date(time);
@@ -93,7 +94,7 @@ export const getStartAndEnd = ({
     start.setDate(start.getDate() - daysUntilMonday);
 
     const end = new Date(start);
-    end.setDate(end.getDate() + 6);
+    end.setDate(end.getDate() + 7);
     end.setHours(23, 59, 59, 999);
     return { start, end };
   }
@@ -138,7 +139,6 @@ export const groupByTime = ({
       yAxis: result,
       xAxis,
     };
-    
   } else {
     const result: number[] = Array(7).fill(0);
 
@@ -147,6 +147,7 @@ export const groupByTime = ({
       result[day] += item.y;
     }
     const xAxis = ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"];
+
     return {
       yAxis: result,
       xAxis,

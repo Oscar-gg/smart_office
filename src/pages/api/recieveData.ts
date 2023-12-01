@@ -21,6 +21,8 @@ export default async function handler(
   // console.log("query", req.query);
 
   const { dataType, data, id } = req.body;
+  console.log("Datatype:", dataType, "Data:", data, "Id:", id);
+  
   try {
     const type = DeviceDataType.parse(dataType);
 
@@ -38,12 +40,16 @@ export default async function handler(
         rfidLecture,
       });
     } else if (type === "light") {
-      const lightDetection = z.string().parse(data);
-      const id_ = z.string().parse(id);
-      await sensorCaller.addLight({
-        lightAfter: lightDetection,
-        sessionId: id_,
-      });
+      if (z.string().safeParse(data).success) {
+        const lightDetection = z.string().parse(data);
+        const id_ = z.string().parse(id);
+        await sensorCaller.addLight({
+          lightAfter: lightDetection,
+          sessionId: id_,
+        });
+      } else {
+        console.log("Ignoring data:", req.body);
+      }
     } else if (type === "movement") {
       await sensorCaller.registerMovement();
     } else if (type == "workTime") {
@@ -61,7 +67,7 @@ export default async function handler(
       message: "Data recieved successfully",
     });
   } catch (error) {
-    console.log("error: ", error);
+    console.log("Error inside recieveData: ", error);
     res.status(400).json({
       message: "Error: " + JSON.stringify(error),
     });
