@@ -98,12 +98,12 @@ const PageSwitch = ({ page }: { page: string }) => {
     return (
       <>
         <Devices />
-        <button
+        {/* <button
           className="m-2 rounded-md bg-green-400 p-1"
           onClick={() => mutation.mutate()}
         >
           Generate Data
-        </button>
+        </button> */}
       </>
     );
   } else if (page === "Users") {

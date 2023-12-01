@@ -324,10 +324,7 @@ export const chartRouter = createTRPCRouter({
       const date = input.now ? new Date(input.now) : new Date();
 
       date.setDate(date.getDate() - 1);
-
-      console.log("Srv: ", input.now);
-      console.log("Srv: ", date);
-
+      
       const temperatures = await ctx.db.temperature.findMany({
         where: {
           createdAt: {

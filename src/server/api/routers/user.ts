@@ -90,14 +90,24 @@ export const userRouter = createTRPCRouter({
           data: {
             gender: input.gender,
             birthday: input.birthdate,
-            Preferences: {
-              update: {
-                temp_val_min: input.minimumTemperature,
-                temp_val_max: input.maximumTemperature,
-              },
-            },
           },
         });
+
+        await ctx.db.preferences.upsert({
+          where: {
+            id_user: input.id,
+          },
+          create: {
+            id_user: input.id,
+            temp_val_min: input.minimumTemperature,
+            temp_val_max: input.maximumTemperature,
+          },
+          update: {
+            temp_val_min: input.minimumTemperature,
+            temp_val_max: input.maximumTemperature,
+          },
+        });
+
         return "Se han guardado las modificaciones del usuario.";
       } else {
         throw new TRPCError({
