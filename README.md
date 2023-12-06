@@ -5,6 +5,8 @@ Iot project to manage office spaces, provide insights and analytics.
 This code corresponds to the serverless backend, where web clients make requests to and NodeMcu devices send data to.
 For the NodeMcu code, please refer to [this repository](https://github.com/Oscar-gg/smart_office_nodemcu).
 
+- Deployed at: https://smart-office-git-master-oscar-gg.vercel.app/
+
 ## Project explanation
 
 For a detailed explanation of the project, please refer to the [docs folder](./docs/general.md), which elaborates on some of the 
@@ -40,6 +42,7 @@ npm run dev
 
 - [Coackroackdb](https://www.cockroachlabs.com/): Used to host the database.
 
-## How to deploy
+## Considerations of current deployment
 
--
+- For demonstration purposes, admin routes can be accesed without authentication, however, some functionality may be unable to be used without authentication, such as modifying data and querying all users' data.
+- The database may be erased after some time, since it is hosted in a free tier.
